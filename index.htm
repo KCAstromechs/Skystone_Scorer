@@ -1,0 +1,850 @@
+<html>
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
+<link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet"> 
+
+<style>
+    body {
+        scroll: none;
+        font-family: sans-serif;
+		font-size: 100%;  /* Fallback in case vw/vh isn't supported */
+    }
+
+    #red_score {
+        color: darkred;
+        font-size: 5vh;
+		font-family: Rubik;
+		font-weight: 800;
+        text-shadow: 0.2vmax 0.2vmax 0.2vmax rgba(150, 150, 150, 0.5);
+    }
+
+    #blue_score {
+        color: blue;
+        font-size: 5vh;
+		font-family: Rubik;
+		font-weight: 800;
+        text-shadow: 0.2vmax 0.2vmax 0.2vmax rgba(150, 150, 150, 0.5);
+    }
+	
+	.counter {
+		font-size: 2.5vmax;
+		font-family: Rubik;
+		font-weight: 800;
+        text-shadow: 0.2vmax 0.2vmax 1vmax rgba(0, 0, 0, 0.8);
+		color: #cc0;
+	}
+
+
+    h1 {
+        width: 100%;
+        font-size: 5vh;
+        text-align: center;
+        margin-bottom: 0;
+        text-shadow: 0.2vmin 0.2vmin 0.4vmin #000;
+    }
+	
+	#logo {
+		height: 5vh;
+	}
+	
+	.skystone_color {
+		color: #105369;
+	}
+	.skystone_color_shadowed {
+		color: #105369;
+        text-shadow: 0.2vmin 0.2vmin 0.4vmin #A1C3D0;
+	}
+
+    h2 {
+        font-size: 3vh;
+        margin: 0.5vh;
+    }
+	
+	.moveleft.ToMove {
+		height: 3vh;
+		width: 5vw;
+        background-image: url(MoveLeft-faint.png);
+        background-size: 100% 100%;
+	}
+	.moveleft.Moved {
+		height: 3vh;
+		width: 5vw;
+        background-image: url(MoveLeft.png);
+        background-size: 100% 100%;
+	}
+	.moveright.ToMove {
+		height: 3vh;
+		width: 5vw;
+        background-image: url(MoveRight-faint.png);
+        background-size: 100% 100%;
+	}
+	.moveright.Moved {
+		height: 3vh;
+		width: 5vw;
+        background-image: url(MoveRight.png);
+        background-size: 100% 100%;
+	}
+    
+    #credits {
+        width: 100%;
+        text-align: center;
+        padding-top: 2vh;
+        font-size: 1.5vh;
+    }
+
+    button {
+        font-size: 4vh;
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 1vh 2vw;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+    }
+    
+    #buttonRefresh {
+        color: black;
+        width: 0;
+        align: right;
+        background-color: ghostwhite;
+        padding: 0;
+    }
+    #iconRefresh {
+        color: black;
+        font-size: 5vh;
+        vertical-align: middle;
+        align: left;
+        padding: 0;
+        margin: 0;
+    }
+    #buttonPP {
+        color: black;
+        width: 0;
+        align: left;
+        background-color: ghostwhite;
+        padding: 0;
+    }
+    #iconPP {
+        color: black;
+        font-size: 5vh;
+        vertical-align: middle;
+        align: left;
+        padding: 0;
+        margin: 0;
+    }
+
+    .skybridge {
+        width: 25vw;
+        height: 1vh;
+		margin-top: 1vh;
+        position: absolute;
+		border-top: 0.5vh solid;
+		border-bottom: 0.5vh solid;
+    }
+
+    .blue {
+		border-color: blue;
+    }
+
+    .red {
+		border-color: darkred;
+    }
+	
+	table {
+		/* Disable text selection, preventing numbers from highlighting when double-clicked */
+		-webkit-touch-callout: none; /* iOS Safari */
+		-webkit-user-select: none;   /* Chrome/Safari/Opera */
+		-khtml-user-select: none;    /* Konqueror */
+		-moz-user-select: none;      /* Firefox */
+		-ms-user-select: none;       /* Internet Explorer/Edge */
+		user-select: none;           /* Non-prefixed version, currently supported by any browser but before IE9 */
+	}
+
+    /****************** Stone table *****************/
+    .foundation {
+        position: relative;
+        width: 18vmax;
+        border: 0.1vw solid;
+        padding: 0;
+        border-spacing: 0;
+        border-collapse: collapse;
+        z-index: 99;
+
+		text-align: center;
+		vertical-align: middle;
+    }
+	
+	.foundation td {
+		-webkit-background-size: cover;
+		-moz-background-size: cover;
+		-o-background-size: cover;
+		background-size: cover;
+        height: 4.5vmax;
+		width: 9vmax;
+        border: 0.1vw solid black;
+	}
+	
+	.foundation td.filled {
+		background-image: url(Stone.png);
+		color: #000;
+	}
+	
+	.foundation.blue td.empty {
+		background-image: url(BlueFoundation.png);
+	}
+	
+	.foundation.red td.empty {
+		background-image: url(RedFoundation.png);
+	}
+
+	.parking {
+        margin-top: 1vh;
+        width: 5vh;
+        height: 5vh;
+        border: 0.1vw solid;
+		border-color: black;
+	}
+
+	#blue_parking_end_1 {
+		position: absolute;
+        width: 4vw;
+        height: 4vw;
+		top: -13vw;
+		left: 5.5vw;
+        border: 0.1vw solid;
+		border-color: black;
+	}
+	#blue_parking_end_2 {
+		position: absolute;
+        width: 4vw;
+        height: 4vw;
+		top: -8vw;
+		left: 0.5vw;
+        border: 0.1vw solid;
+		border-color: black;
+	}
+
+	#red_parking_end_1 {
+		position: absolute;
+        width: 4vw;
+        height: 4vw;
+		top: -13vw;
+		right: 6vw;
+        border: 0.1vw solid;
+		border-color: black;
+	}
+	#red_parking_end_2 {
+		position: absolute;
+        width: 4vw;
+        height: 4vw;
+		top: -8vw;
+		right: 1vw;
+        border: 0.1vw solid;
+		border-color: black;
+	}
+
+    .auto {
+        background-image: url(auto.png);
+        background-size: 100% 100%;
+    }
+    .key {
+        background-image: url(key.png);
+        background-size: 100% 100%;
+    }
+    .parked {
+        background-image: url(Parked.png);
+        background-size: 100% 100%;
+    }
+    .topark {
+        background-image: url(ToPark.png);
+        background-size: 100% 100%;
+    }
+
+    .corner_img {
+        width: 15vw;
+		height: 15vw;
+		position: relative;
+    }
+
+    .stone_counters {
+        background-color: #AAA;
+        width:90%;
+        margin-top: 5vh;
+    }
+</style>
+
+<script>
+	var ACTIVE_COLOR = "#4CAF50";
+	var INACTIVE_COLOR = "#aaa";
+    var isAuto = true;
+
+    function reset_park(name)
+	{
+		var el = document.getElementById(name);
+		
+		el.classList.add("ToPark");
+		el.classList.remove("Parked");
+	}
+    function reset_move(name)
+	{
+		var el = document.getElementById(name);
+		
+		el.classList.add("ToMove");
+		el.classList.remove("Moved");
+	}
+	
+	function onParkClick(ev)
+	{
+        event.preventDefault();     // prevents duplicate onclick if touchscreen
+
+		var el = ev.target;
+		el.classList.toggle("ToPark");
+		el.classList.toggle("Parked");
+		calcScore();
+	}
+	
+	function getParent(el, selector, stopSelector)
+	{
+		if (!el)
+			return null;
+		if (el.matches(selector))
+			return el;
+		if (stopSelector && el.matches(stopSelector))
+			return null;
+		return getParent(el.parentElement, selector);
+	}
+	
+	function onSkyStoneClick(event)
+	{
+		var el = event.target;
+        event.preventDefault();     // prevents duplicate onclick if touchscreen
+		
+		if (!isAuto)
+			return;
+		
+		var elTable = getParent(el, "table");
+		elTable.rows[1].cells[0].innerHTML = (Number(elTable.rows[1].cells[0].innerHTML) + 1) % 3;
+		calcScore();
+	}
+	
+	function onStoneClick(event)
+	{
+		var el = event.target;
+        event.preventDefault();     // prevents duplicate onclick if touchscreen
+	
+		var elTable = getParent(el, "table");
+		if (isAuto)
+			elTable.rows[1].cells[0].innerHTML = Number(elTable.rows[1].cells[0].innerHTML) + 1;
+		else
+			elTable.rows[1].cells[1].innerHTML = Number(elTable.rows[1].cells[1].innerHTML) + 1;
+		calcScore();
+	}
+	
+	function onFoundationClick(event)
+	{
+		var cell = event.target;
+		var elTable = getParent(cell, "table");
+        event.preventDefault();     // prevents duplicate onclick if touchscreen
+		
+		r = cell.parentElement.rowIndex;
+		c = cell.cellIndex;
+
+		var cur = "" + elTable.rows[r].cells[c].innerHTML;
+		var cAuto = 0;
+		var cTeleop = 0;
+		
+		if (cur.includes('('))
+		{
+			var asplit = cur.replace("(","").replace(")","").split("&nbsp;&nbsp;&nbsp;&nbsp;");
+			cAuto = Number(asplit[0]);
+			cTeleop = Number(asplit[1]);
+		}
+		else
+			cTeleop = Number(cur);
+		if (isNaN(cTeleop))
+			cTeleop = 0;
+		if (isNaN(cAuto))
+			cAuto = 0;
+		
+		if (isAuto)
+			cAuto += 1;
+		else
+			cTeleop += 1;
+		
+		if (cAuto)
+			v = "("+cAuto+")&nbsp;&nbsp;&nbsp;&nbsp;"+cTeleop;
+		else if (cTeleop)
+			v = cTeleop;
+		else
+			v = "&nbsp;"
+		elTable.rows[r].cells[c].innerHTML = v;
+		
+		if (v == "&nbsp;")
+			cell.className = "empty";
+		else
+			cell.className = "filled";
+		
+		calcScore();
+	}
+	
+	function onCornerClick(ev)
+	{
+		var el = ev.target;
+		el.classList.toggle("ToMove");
+		el.classList.toggle("Moved");
+		calcScore();
+	}
+
+    function reset()
+	{
+		document.getElementById("blue_skystone_count").rows[1].cells[0].innerHTML = 0;
+		document.getElementById("red_skystone_count").rows[1].cells[0].innerHTML = 0;
+		document.getElementById("red_stone_count").rows[1].cells[0].innerHTML = 0;
+		document.getElementById("red_stone_count").rows[1].cells[1].innerHTML = 0;
+		document.getElementById("blue_stone_count").rows[1].cells[0].innerHTML = 0;
+		document.getElementById("blue_stone_count").rows[1].cells[1].innerHTML = 0;
+
+		var redFoundation = document.getElementById("red_foundation");
+		var blueFoundation = document.getElementById("blue_foundation");
+		for (var c=0; c < 2; c++)
+			for (var r=0; r < 8; r++)
+			{
+				redFoundation.rows[r].cells[c].innerHTML = "&nbsp;";
+				redFoundation.rows[r].cells[c].className = "empty";
+
+				blueFoundation.rows[r].cells[c].innerHTML = "&nbsp;";
+				blueFoundation.rows[r].cells[c].className = "empty";
+			}
+		
+		reset_park("red_parking_auto_1");
+		reset_park("red_parking_auto_2");
+		reset_park("blue_parking_auto_1");
+		reset_park("blue_parking_auto_2");
+		reset_park("blue_parking_end_1");
+		reset_park("blue_parking_end_2");
+		reset_park("red_parking_end_1");
+		reset_park("red_parking_end_2");		
+		
+		reset_move("blue_platform_in");
+		reset_move("blue_platform_out");
+		reset_move("red_platform_in");
+		reset_move("red_platform_out");
+	}
+	
+    function init()
+    {
+		var redFoundation = document.getElementById("red_foundation");
+		var blueFoundation = document.getElementById("blue_foundation");
+		for (var c=0; c < 2; c++)
+			for (var r=0; r < 8; r++)
+			{
+				var cell = redFoundation.rows[r].cells[c];
+				cell.addEventListener('touchstart', function(e) { onFoundationClick(e, e.target) } );
+				cell.addEventListener('click', function(e) { onFoundationClick(e, e.target) });
+
+				cell = blueFoundation.rows[r].cells[c];
+				cell.addEventListener('touchstart', function(e) { onFoundationClick(e, e.target) } );
+				cell.addEventListener('click', function(e) { onFoundationClick(e, e.target) });
+			}	
+        document.getElementById("blue_foundation").addEventListener('touchstart', preventZoom);
+        document.getElementById("red_foundation").addEventListener('touchstart', preventZoom);
+        //document.getElementById("bb_balls").addEventListener('touchstart', preventZoom);
+        //document.getElementById("rb_balls").addEventListener('touchstart', preventZoom);
+        //document.getElementById("bf_balls").addEventListener('touchstart', preventZoom);
+        //document.getElementById("rf_balls").addEventListener('touchstart', preventZoom);
+	
+		reset();
+        document.getElementById("auto").style.backgroundColor = ACTIVE_COLOR;
+        document.getElementById("teleop").style.backgroundColor = INACTIVE_COLOR
+
+        calcScore();
+    }
+    
+    function preventZoom(e) {
+      var t2 = e.timeStamp;
+      var t1 = e.currentTarget.dataset.lastTouch || t2;
+      var dt = t2 - t1;
+      var fingers = e.touches.length;
+      e.currentTarget.dataset.lastTouch = t2;
+
+      if (!dt || dt > 500 || fingers > 1) return; // not double-tap
+
+      e.preventDefault();
+      e.target.click();
+    }
+
+    function onTeleOp()
+    {
+        isAuto = false;
+        document.getElementById("blue_parking_end_1").style.visibility = "visible";
+        document.getElementById("blue_parking_end_2").style.visibility = "visible";
+        <!-- document.getElementById("red_parking_end_1").style.visibility = "visible"; -->
+        document.getElementById("red_parking_end_2").style.visibility = "visible";
+        document.getElementById("red_platform_out").style.visibility = "visible";
+        document.getElementById("blue_platform_out").style.visibility = "visible";
+
+        document.getElementById("auto").style.backgroundColor = INACTIVE_COLOR;
+        document.getElementById("teleop").style.backgroundColor = ACTIVE_COLOR;
+    }
+
+    function onAuto()
+    {
+        isAuto = true;
+        document.getElementById("blue_parking_end_1").style.visibility = "hidden";
+        document.getElementById("blue_parking_end_2").style.visibility = "hidden";
+        document.getElementById("red_parking_end_1").style.visibility = "hidden";
+        document.getElementById("red_parking_end_2").style.visibility = "hidden";
+        document.getElementById("red_platform_out").style.visibility = "hidden";
+        document.getElementById("blue_platform_out").style.visibility = "hidden";
+
+        document.getElementById("auto").style.backgroundColor = ACTIVE_COLOR;
+        document.getElementById("teleop").style.backgroundColor = INACTIVE_COLOR
+    }
+
+    function calcScore()
+    {
+        var red=0;
+        var blue=0;
+		
+		//////////////////////////////////////////////////////////////////////
+        // Score Autonomous
+		blue += document.getElementById("blue_platform_in").classList.contains("Moved") ? 10 : 0;
+		red += document.getElementById("red_platform_in").classList.contains("Moved") ? 10 : 0;
+		
+		blue += document.getElementById("blue_platform_in").classList.contains("Moved") ? 10 : 0;
+		
+		red += 10 * Number(document.getElementById("red_skystone_count").rows[1].cells[0].innerHTML);
+		red += 2 * Number(document.getElementById("red_stone_count").rows[1].cells[0].innerHTML);
+		
+		blue += 10 * Number(document.getElementById("blue_skystone_count").rows[1].cells[0].innerHTML);
+		blue += 2 * Number(document.getElementById("blue_stone_count").rows[1].cells[0].innerHTML);
+	
+		blue += document.getElementById("blue_parking_auto_1").classList.contains("Parked") ? 5 : 0;
+		blue += document.getElementById("blue_parking_auto_2").classList.contains("Parked") ? 5 : 0;
+		red += document.getElementById("red_parking_auto_1").classList.contains("Parked") ? 5 : 0;
+		red += document.getElementById("red_parking_auto_2").classList.contains("Parked") ? 5 : 0;
+
+		// Score teleop
+		red += 1 * Number(document.getElementById("red_stone_count").rows[1].cells[1].innerHTML);
+		blue += 1 * Number(document.getElementById("blue_stone_count").rows[1].cells[1].innerHTML);
+
+        // Score Endgame
+		blue += document.getElementById("blue_platform_out").classList.contains("Moved") ? 15 : 0;
+		red += document.getElementById("red_platform_out").classList.contains("Moved") ? 15 : 0;
+
+		blue += document.getElementById("blue_parking_end_1").classList.contains("Parked") ? 5 : 0;
+		blue += document.getElementById("blue_parking_end_2").classList.contains("Parked") ? 5 : 0;
+		red += document.getElementById("red_parking_end_1").classList.contains("Parked") ? 5 : 0;
+		red += document.getElementById("red_parking_end_2").classList.contains("Parked") ? 5 : 0;
+
+
+		var redFoundation = document.getElementById("red_foundation");
+		var cTallest = 0;
+		for (var c=0; c < 2; c++)
+			for (var r=0; r < 8; r++)
+			{
+				var cur = "" + redFoundation.rows[r].cells[c].innerHTML;
+				var cAuto = 0;
+				var cTeleop = 0;
+				
+				if (cur.includes('('))
+				{
+					var asplit = cur.replace("(","").replace(")","").split("&nbsp;&nbsp;&nbsp;&nbsp;");
+					cAuto = Number(asplit[0]);
+					cTeleop = Number(asplit[1]);
+				}
+				else
+					cTeleop = Number(cur);
+				if (isNaN(cTeleop))
+					cTeleop = 0;
+				if (isNaN(cAuto))
+					cAuto = 0;
+					
+				red += 4*cAuto;
+				red += 1*cTeleop;
+				
+				if (cAuto+cTeleop > cTallest)
+					cTallest = cAuto+cTeleop;
+			}
+		red += 2*cTallest;
+
+		var blueFoundation = document.getElementById("blue_foundation");
+		cTallest = 0;
+		for (var c=0; c < 2; c++)
+			for (var r=0; r < 8; r++)
+			{
+				var cur = "" + blueFoundation.rows[r].cells[c].innerHTML;
+				var cAuto = 0;
+				var cTeleop = 0;
+				
+				if (cur.includes('('))
+				{
+					var asplit = cur.replace("(","").replace(")","").split("&nbsp;&nbsp;&nbsp;&nbsp;");
+					cAuto = Number(asplit[0]);
+					cTeleop = Number(asplit[1]);
+				}
+				else
+					cTeleop = Number(cur);
+				if (isNaN(cTeleop))
+					cTeleop = 0;
+				if (isNaN(cAuto))
+					cAuto = 0;
+					
+				blue += 4*cAuto;
+				blue += 1*cTeleop;
+				
+				if (cAuto+cTeleop > cTallest)
+					cTallest = cAuto+cTeleop;
+			}
+		blue += 2*cTallest;
+
+        document.getElementById("blue_score").innerHTML = blue;
+        document.getElementById("red_score").innerHTML = red;
+    }
+
+
+    var timer = null;
+    var phase = 0;      // -2 = not started, 0 = not started, 4 = finished
+                        // 1 = auto (0:30), 2 = between (0:05), 3 = teleop (2:00)
+    var timeStart = 0;
+    function onPlayPause()
+    {
+        var btn = document.getElementById("iconPP");
+
+        if (btn.innerHTML.indexOf("play") > -1)
+        {
+			document.getElementById("auto").style.visibility = "visible";
+			document.getElementById("teleop").style.visibility = "visible";
+		
+		
+            btn.innerHTML = "pause_circle_outline";
+            
+            if (phase == 0)
+            {
+                // Start cycle
+                phase += 1;
+                timeStart = new Date().getTime();
+            }
+            else
+            {
+                // Unpause
+                phase = -phase;
+                timeStart = new Date().getTime()-timeStart;
+            }
+            timer = setInterval(onClockUpdate, 500);
+        }
+        else
+        {
+            // Cycle is complete
+            btn.innerHTML = "play_circle_outline";
+            phase = -phase;
+            timeStart = new Date().getTime()-timeStart;
+        }
+    }
+    
+    function onClockUpdate()
+    {
+        var lbl = document.getElementById("phase");
+        var elapsed;
+
+        if (phase < 0 || phase == 4) 
+        {
+            // Paused
+            elapsed = timeStart;
+            if (lbl.style.color == "black")
+                lbl.style.color = "white";
+            else
+                lbl.style.color = "black";
+        }
+        else
+            elapsed = new Date().getTime()-timeStart;
+        
+        var dur = 0;
+        if (Math.abs(phase) == 1)
+        {
+            // Autonomous
+            dur = 30;
+            lbl.style.color="blue";
+        }
+        else if (Math.abs(phase) == 2)
+        {
+            // Transition
+            dur = 8;
+            lbl.style.color="red";
+        }
+        else if (Math.abs(phase) == 3)
+        {
+            // Teleop period
+            dur = 2*60;
+            lbl.style.color="blue";
+
+        }
+        else if (Math.abs(phase) == 4)
+        {
+            // Game over!
+            lbl.innerHTML = "0:00";
+            return;
+        }
+        var remaining = Math.round(dur - elapsed/1000);
+        var minutes = Math.floor(remaining/60);
+        var secs = remaining%60;
+        if (secs < 10)
+            secs = "0"+secs;
+        lbl.innerHTML = minutes+":"+secs;
+        
+        if (remaining == 0)
+        {
+            // Automatically move on to the next phase
+            phase += 1;
+            timeStart = new Date().getTime();
+            
+            if (phase == 2)
+            {
+                document.getElementById("auto").style.backgroundColor="#aaa";
+            }
+            else if (phase == 3)
+            {
+                onTeleOp();
+            }
+            else if (phase > 3)
+            {
+//                clearInterval(timer);
+  //              timer = null;
+            }
+        }
+    }
+</script>
+
+<body onpageshow="init()">
+
+<table width=100% height=100%>
+
+<tr><td id="blue_score">0</td>
+    <td colspan=2><h1><img id="logo" class="logo_img" src="Logo.png"/><font  color="#FFC300">&nbsp;Scorer</font></td>
+    <td id="red_score" align="right">0</td></tr>
+
+<tr style="vertical-align:top">
+    <td style="background-color:fff" width="10%">
+        <table>
+            <tr><td><span style="position: relative;">
+						<img class="corner_img" src="Corner_blue.png"/>
+			
+						<div id="blue_platform_in" class="moveleft" style="position: absolute; top: -11vw; left: 11.8vw"ontouchstart="onCornerClick(event)" onclick="onCornerClick(event)"></div>
+						<div id="blue_platform_out" class="moveright" style="position: absolute; top: -1vw; left: 3vw" ontouchstart="onCornerClick(event)" onclick="onCornerClick(event)"></div>
+						
+						<div id="blue_parking_end_1" class="parking" ontouchstart="onParkClick(event)" onclick="onParkClick(event)"></div>
+						<div id="blue_parking_end_2" class="parking" ontouchstart="onParkClick(event)" onclick="onParkClick(event)"></div>
+					</span>
+				</td></tr>
+
+        </table>
+		
+        <table id="blue_skystone_count" class="stone_counters counter">
+            <tr><td ontouchstart="onSkyStoneClick(event)" onclick="onSkyStoneClick(event)"><img width="100%" src="Skystone.png"/></td></tr>
+			<tr><td align="center">0</td></tr>
+        </table>
+        <table id="blue_stone_count" class="stone_counters counter">
+            <tr><td colspan="2" ontouchstart="onStoneClick(event)" onclick="onStoneClick(event)"><img id="blue_stone" width="100%" src="Stone.png"/></td></tr>
+			<tr><td align="center">0</td><td align="center">0</td></tr>
+        </table>
+    </td>
+    <td>
+        <center>
+        <h2>Blue Foundation</h2>
+        <table class="foundation blue counter" id="blue_foundation">
+            <tr><td/><td/></tr>
+            <tr><td/><td/></tr>
+            <tr><td/><td/></tr>
+            <tr><td/><td/></tr>
+            <tr><td/><td/></tr>
+            <tr><td/><td/></tr>
+            <tr><td/><td/></tr>
+            <tr><td/><td/></tr>
+        </table>
+    </td>
+    <td>
+        <center>
+        <h2>Red Foundation</h2>
+        <table class="foundation red counter" id="red_foundation">
+            <tr><td/><td/></tr>
+            <tr><td/><td/></tr>
+            <tr><td/><td/></tr>
+            <tr><td/><td/></tr>
+            <tr><td/><td/></tr>
+            <tr><td/><td/></tr>
+            <tr><td/><td/></tr>
+            <tr><td/><td/></tr>
+        </table>
+
+    </td>
+    <td style="background-color:fff" width="10%">
+        <table>
+            <tr><td>
+				<span style="position: relative;">
+					<img class="corner_img" src="Corner_red.png"/>&nbsp;
+				
+					<div id="red_platform_out" class="moveleft" style="position: absolute; top: -1vw; left: 7vw" ontouchstart="onCornerClick(event)" onclick="onCornerClick(event)"></div>
+					<div id="red_platform_in" class="moveright" style="position: absolute; top: -11vw; left: -2vw" ontouchstart="onCornerClick(event)" onclick="onCornerClick(event)"></div>
+					<div id="red_parking_end_1" class="parking" ontouchstart="onParkClick(event)" onclick="onParkClick(event)"></div>
+					<div id="red_parking_end_2" class="parking" ontouchstart="onParkClick(event)" onclick="onParkClick(event)"></div>
+				</span>
+			</td></tr>
+        </table>
+        <table id="red_skystone_count" class="stone_counters counter" ontouchstart="onSkyStoneClick(event)" onclick="onSkyStoneClick(event)">
+            <tr><td><img width="100%" src="SkyStone.png"/></td></tr>
+			<tr><td align="center">0</td></tr>
+		</table>
+		
+        <table id="red_stone_count" class="stone_counters counter" ontouchstart="onStoneClick(event)" onclick="onStoneClick(event)">
+            <tr><td colspan="2"><img width="100%" src="Stone.png"/></td></tr>
+			<tr><td align="center">0</td><td align="center">0</td></tr>
+        </table>
+    </td>
+</tr>
+
+<tr>
+	<td colspan="2">
+        <span class="skybridge blue" style="left:1vw"></span>
+	</td>
+
+	<td colspan="2">
+        <span class="skybridge red" style="right:1vw"></span>
+	</td>
+</td>
+</tr>
+<tr>
+	<td align="right">	<div id="blue_parking_auto_1" class="parking" ontouchstart="onParkClick(event)" onclick="onParkClick(event)"/></td>
+	<td>				<div id="blue_parking_auto_2" class="parking" ontouchstart="onParkClick(event)" onclick="onParkClick(event)"/></td>
+	
+	<td align="right">	<div id="red_parking_auto_1" class="parking" ontouchstart="onParkClick(event)" onclick="onParkClick(event)"/></td>
+	<td>				<div id="red_parking_auto_2" class="parking" ontouchstart="onParkClick(event)" onclick="onParkClick(event)"/></td>
+</tr>
+
+<tr>
+    <td align="center">
+        <button id="buttonPP" onclick="onPlayPause()">
+            <i id="iconPP" class="material-icons">play_circle_outline</i>
+        </button>
+    </td>
+    <td colspan=2>
+        <center>
+        <button id="auto" onclick="onAuto()">Auto</button>
+        <button id="teleop" onclick="onTeleOp()">TeleOp</button>
+        <span id="phase" class="skystone_color_shadowed">&nbsp;</span>
+        </center>
+    </td>
+    <td align="center">
+        <button id="buttonRefresh" onclick="location.reload()">
+            <i id="iconRefresh" class="material-icons">refresh</i>
+        </button>
+    </td>
+</tr>
+<tr><td colspan=4>
+        <div id="credits" class="skystone_color_shadowed">brought to you by #3409 - the Astromechs and #5227 - Galactech and <a href="http://www.onlinewebfonts.com">oNline Web Fonts</a></div>
+    <td></tr>
+</table>
+
+</body>
+</html>
