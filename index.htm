@@ -113,7 +113,7 @@
     }
     #iconRefresh {
         color: black;
-        font-size: 5vh;
+        font-size: 6vh;
         vertical-align: middle;
         align: left;
         padding: 0;
@@ -128,7 +128,7 @@
     }
     #iconPP {
         color: black;
-        font-size: 5vh;
+        font-size: 6vh;
         vertical-align: middle;
         align: left;
         padding: 0;
@@ -391,6 +391,8 @@
 	
 	function onCornerClick(ev)
 	{
+        event.preventDefault();     // prevents duplicate onclick if touchscreen
+	
 		var el = ev.target;
 		el.classList.toggle("ToMove");
 		el.classList.toggle("Moved");
@@ -478,12 +480,13 @@
     function onTeleOp()
     {
         isAuto = false;
-        document.getElementById("blue_parking_end_1").style.visibility = "visible";
-        document.getElementById("blue_parking_end_2").style.visibility = "visible";
-        <!-- document.getElementById("red_parking_end_1").style.visibility = "visible"; -->
-        document.getElementById("red_parking_end_2").style.visibility = "visible";
-        document.getElementById("red_platform_out").style.visibility = "visible";
-        document.getElementById("blue_platform_out").style.visibility = "visible";
+		
+		document.getElementById("blue_platform_out").style.visibility = "visible";
+		document.getElementById("blue_parking_end_1").style.visibility = "visible";
+		document.getElementById("blue_parking_end_2").style.visibility = "visible";
+		document.getElementById("red_platform_out").style.visibility = "visible";
+		document.getElementById("red_parking_end_1").style.visibility = "visible";
+		document.getElementById("red_parking_end_2").style.visibility = "visible";
 
         document.getElementById("auto").style.backgroundColor = INACTIVE_COLOR;
         document.getElementById("teleop").style.backgroundColor = ACTIVE_COLOR;
@@ -492,12 +495,6 @@
     function onAuto()
     {
         isAuto = true;
-        document.getElementById("blue_parking_end_1").style.visibility = "hidden";
-        document.getElementById("blue_parking_end_2").style.visibility = "hidden";
-        document.getElementById("red_parking_end_1").style.visibility = "hidden";
-        document.getElementById("red_parking_end_2").style.visibility = "hidden";
-        document.getElementById("red_platform_out").style.visibility = "hidden";
-        document.getElementById("blue_platform_out").style.visibility = "hidden";
 
         document.getElementById("auto").style.backgroundColor = ACTIVE_COLOR;
         document.getElementById("teleop").style.backgroundColor = INACTIVE_COLOR
@@ -617,8 +614,7 @@
         {
 			document.getElementById("auto").style.visibility = "visible";
 			document.getElementById("teleop").style.visibility = "visible";
-		
-		
+			
             btn.innerHTML = "pause_circle_outline";
             
             if (phase == 0)
@@ -626,6 +622,14 @@
                 // Start cycle
                 phase += 1;
                 timeStart = new Date().getTime();
+
+				// Very first time...
+				document.getElementById("blue_platform_out").style.visibility = "hidden";
+				document.getElementById("blue_parking_end_1").style.visibility = "hidden";
+				document.getElementById("blue_parking_end_2").style.visibility = "hidden";
+				document.getElementById("red_platform_out").style.visibility = "hidden";
+				document.getElementById("red_parking_end_1").style.visibility = "hidden";
+				document.getElementById("red_parking_end_2").style.visibility = "hidden";
             }
             else
             {
@@ -793,7 +797,7 @@
 			</td></tr>
         </table>
         <table id="red_skystone_count" class="stone_counters counter" ontouchstart="onSkyStoneClick(event)" onclick="onSkyStoneClick(event)">
-            <tr><td><img width="100%" src="SkyStone.png"/></td></tr>
+            <tr><td><img width="100%" src="Skystone.png"/></td></tr>
 			<tr><td align="center">0</td></tr>
 		</table>
 		
