@@ -289,13 +289,16 @@
 	
 	.cap {
 		position: relative;
-		top: -5vh;
+		top: -2vh;
         width: 5vh;
         height: 5vh;
-        border: 0.1vw solid;
-		border-color: white;
+        border: 0;
         background-image: url(cap.png);
         background-size: 100% 100%;
+	}
+	.cap_holder {
+        width: 5vh;
+        height: 5vh;
 	}
 
 	#blue_parking_end_1 {
@@ -434,25 +437,28 @@
 
 	function showMessage(msg)
 	{
+		if (!msg || msg == "")
+			msg = "&nbsp;"
+		
 		elByID("message").innerHTML = msg;
 	}
 
-	var capping = null;
+	var cap = null;
 	function onCapClick(ev)
 	{
         event.preventDefault();     // prevents duplicate onclick if touchscreen
 		if (prevent_bounce("capping"))
 			return;
 
-		if (capping)
+		if (cap)
 		{
 			flashMessage("Cap cancelled");
-			capping = null;
+			cap = null;
 		}
 		else
 		{
 			showMessage("Tap the tower to cap");
-			capping = ev.target;
+			cap = ev.target;
 		}
 	}
 	
@@ -531,16 +537,35 @@
 		var cAuto = 0;
 		var cTeleop = 0;
 		
-		if (capping)
+		if (cap)
 		{
 			showMessage("");
-			capping.classList.add("placed");
-			capping.style.visibility = "hidden";
+			
+			if (cap.tower)
+			{
+				// Uncapping a previously capped tower
+				if (cap.tower.classList.contains("capped2"))
+					cap.tower.classList.remove("capped2");
+				else if (cap.tower.classList.contains("capped1"))
+					cap.tower.classList.remove("capped1");
+			}
+			cap.tower = cell;
+
+			
+			var xOfs = 0;
 			if (cell.classList.contains("capped1"))
+			{
 				cell.classList.add("capped2");
+				xOfs = cell.clientWidth/2;
+			}
 			else
 				cell.classList.add("capped1");
-			capping = null;
+
+			cap.style.position = "absolute";
+			cap.style.top = cell.getBoundingClientRect().top; 			// cell.offsetTop;
+			cap.style.left = cell.getBoundingClientRect().left + xOfs; 	// cell.offsetLeft;
+			cap.style.zIndex = 99;
+			cap = null;
 			calcScore();
 			return;
 		}
@@ -571,10 +596,8 @@
 			v = "&nbsp;"
 		elTable.rows[r].cells[c].innerHTML = v;
 		
-		if (v == "&nbsp;")
-			cell.className = "empty";
-		else
-			cell.className = "filled";
+		cell.classList.remove("empty");
+		cell.classList.add("filled");
 		
 		calcScore();
 	}
@@ -1087,19 +1110,19 @@
 				</td>
 				
 				<td align="right">
-					<div id="blue_cap_1" class="cap"/>
+					<div class="cap_holder"><div id="blue_cap_1" class="cap"/></div>
 				</td>
 				<td width="1%">
-					<div id="blue_cap_2" class="cap"/>
+					<div class="cap_holder"><div id="blue_cap_2" class="cap"/></div>
 				</td>
 				<td>&nbsp;
 				</td>
 				
 				<td width="1%" align="right">
-					<div id="red_cap_1" class="cap"/>
+					<div class="cap_holder"><div id="red_cap_1" class="cap"/></div>
 				</td>
 				<td>
-					<div id="red_cap_2" class="cap"/>
+					<div class="cap_holder"><div id="red_cap_2" class="cap"/></div>
 				</td>
 				
 				<td width="1%">
