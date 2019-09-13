@@ -58,8 +58,9 @@
 	
 	#message {
 		position: relative;
-		top: 1vmin;
+		top: -1vmin;
 		font-size: 3vmax;
+		width: 50vw;
 		color: gray;
         text-shadow: 0.2vmin 0.2vmin 0.4vmin #A1C3D0;
 	}
@@ -236,7 +237,20 @@
 	}
 
     /****************** Stone table *****************/
+	
+	.foundation_container {
+		display: -webkit-box;
+		display: -moz-box;
+		display: -ms-flexbox;
+		display: -webkit-flex;
+		display: flex;
+
+		-webkit-flex-flow: row wrap;
+		justify-content: space-evenly;
+	}
+	
     .foundation {
+		display: inline-block;   /* stops tables from hard wrapping */
         position: relative;
         width: 18vmax;
         border: 0.1vw solid;
@@ -247,6 +261,8 @@
 
 		text-align: center;
 		vertical-align: middle;
+		margin: auto;
+		margin-bottom: 20px;
     }
 	
 	.foundation td {
@@ -254,7 +270,7 @@
 		-moz-background-size: cover;
 		-o-background-size: cover;
 		background-size: cover;
-        height: 4.5vmax;
+        height: 4vmax;
 		width: 9vmax;
         border: 0.1vw solid black;
 	}
@@ -364,7 +380,6 @@
 
     .stone_counters {
         background-color: #AAA;
-        width:90%;
         margin-top: 5vh;
     }
 </style>
@@ -692,6 +707,20 @@
 		hookup_Click(elByID("red_cap_1"), onCapClick);
 		hookup_Click(elByID("red_cap_2"), onCapClick);
 
+		hookup_Click(elByID("red_skystone_count"), onSkyStoneClick);
+		hookup_Click(elByID("blue_skystone_count"), onSkyStoneClick);
+		hookup_Click(elByID("blue_stone_count"), onStoneClick);
+		hookup_Click(elByID("red_stone_count"), onStoneClick);
+		
+		hookup_Click(elByID("blue_platform_in"), onPlatformIn);
+		hookup_Click(elByID("red_platform_in"), onPlatformIn);
+		hookup_Click(elByID("blue_platform_out"), onPlatformOut);
+		hookup_Click(elByID("red_platform_out"), onPlatformOut);
+		
+		hookup_Click(elByID("blue_parking_end_1"), onEndParkClick);
+		hookup_Click(elByID("blue_parking_end_2"), onEndParkClick);
+		hookup_Click(elByID("red_parking_end_1"), onEndParkClick);
+		hookup_Click(elByID("red_parking_end_2"), onEndParkClick);
 	
 		reset();
         elByID("auto").style.backgroundColor = ACTIVE_COLOR;
@@ -999,83 +1028,80 @@
 
 <body onpageshow="init()">
 
-<table width=100% height=100%>
+<table width="100%">
 
 <tr><td id="blue_score">0</td>
     <td colspan=2><h1><img id="logo" class="logo_img" src="Logo.png"/><font  color="#FFC300">&nbsp;Scorer</font></td>
     <td id="red_score" align="right">0</td></tr>
 
 <tr style="vertical-align:top">
-    <td style="background-color:fff" width="10%" rowspan="2">
+    <td style="background-color:fff" rowspan="2">
         <table>
             <tr><td><span style="position: relative;">
 						<img class="corner_img" src="Corner_blue.png"/>
 			
-						<div id="blue_platform_in" class="moveleft" style="position: absolute; top: -11vw; left: 11.8vw"ontouchstart="onPlatformIn(event)" onclick="onPlatformIn(event)"></div>
-						<div id="blue_platform_out" class="moveright" style="position: absolute; top: -1vw; left: 3vw" ontouchstart="onPlatformOut(event)" onclick="onPlatformOut(event)"></div>
+						<div id="blue_platform_in" class="moveleft" style="position: absolute; top: -11vw; left: 11.8vw"></div>
+						<div id="blue_platform_out" class="moveright" style="position: absolute; top: -1vw; left: 3vw" ></div>
 						
-						<div id="blue_parking_end_1" class="parking" ontouchstart="onEndParkClick(event)" onclick="onEndParkClick(event)"></div>
-						<div id="blue_parking_end_2" class="parking" ontouchstart="onEndParkClick(event)" onclick="onEndParkClick(event)"></div>
+						<div id="blue_parking_end_1" class="parking"></div>
+						<div id="blue_parking_end_2" class="parking"></div>
 					</span>
 				</td></tr>
 
         </table>
 		
         <table id="blue_skystone_count" class="stone_counters counter">
-            <tr><td ontouchstart="onSkyStoneClick(event)" onclick="onSkyStoneClick(event)"><img width="100%" src="Skystone.png"/></td></tr>
+            <tr><td><img width="100%" src="Skystone.png"/></td></tr>
 			<tr><td align="center">0</td></tr>
         </table>
         <table id="blue_stone_count" class="stone_counters counter">
-            <tr><td colspan="2" ontouchstart="onStoneClick(event)" onclick="onStoneClick(event)"><img id="blue_stone" width="100%" src="Stone.png"/></td></tr>
+            <tr><td colspan="2"><img id="blue_stone" width="100%" src="Stone.png"/></td></tr>
 			<tr><td align="center">0</td><td align="center">0</td></tr>
         </table>
     </td>
-    <td height="1%">
-        <center>
-        <table class="foundation blue counter" id="blue_foundation">
-            <tr><td/><td/></tr>
-            <tr><td/><td/></tr>
-            <tr><td/><td/></tr>
-            <tr><td/><td/></tr>
-            <tr><td/><td/></tr>
-            <tr><td/><td/></tr>
-            <tr><td/><td/></tr>
-            <tr><td/><td/></tr>
-        </table>
+    <td width="40vw" colspan="2">
+		<div class="foundation_container">
+			<table class="foundation blue counter" id="blue_foundation">
+				<tr><td/><td/></tr>
+				<tr><td/><td/></tr>
+				<tr><td/><td/></tr>
+				<tr><td/><td/></tr>
+				<tr><td/><td/></tr>
+				<tr><td/><td/></tr>
+				<tr><td/><td/></tr>
+				<tr><td/><td/></tr>
+			</table>
+			<table class="foundation red counter" id="red_foundation">
+				<tr><td/><td/></tr>
+				<tr><td/><td/></tr>
+				<tr><td/><td/></tr>
+				<tr><td/><td/></tr>
+				<tr><td/><td/></tr>
+				<tr><td/><td/></tr>
+				<tr><td/><td/></tr>
+				<tr><td/><td/></tr>
+			</table>
+		</div>
     </td>
-    <td height="1%">
-        <center>
-        <table class="foundation red counter" id="red_foundation">
-            <tr><td/><td/></tr>
-            <tr><td/><td/></tr>
-            <tr><td/><td/></tr>
-            <tr><td/><td/></tr>
-            <tr><td/><td/></tr>
-            <tr><td/><td/></tr>
-            <tr><td/><td/></tr>
-            <tr><td/><td/></tr>
-        </table>
-
-    </td>
-    <td style="background-color:fff" width="10%" rowspan="2">
+    <td style="background-color:fff" rowspan="2" align="right">
         <table>
             <tr><td>
 				<span style="position: relative;">
 					<img class="corner_img" src="Corner_red.png"/>&nbsp;
 				
-					<div id="red_platform_out" class="moveleft" style="position: absolute; top: -1vw; left: 7vw" ontouchstart="onPlatformOut(event)" onclick="onPlatformOut(event)"></div>
-					<div id="red_platform_in" class="moveright" style="position: absolute; top: -11vw; left: -2vw" ontouchstart="onPlatformIn(event)" onclick="onPlatformIn(event)"></div>
-					<div id="red_parking_end_1" class="parking" ontouchstart="onEndParkClick(event)" onclick="onEndParkClick(event)"></div>
-					<div id="red_parking_end_2" class="parking" ontouchstart="onEndParkClick(event)" onclick="onEndParkClick(event)"></div>
+					<div id="red_platform_out" class="moveleft" style="position: absolute; top: -1vw; left: 7vw"></div>
+					<div id="red_platform_in" class="moveright" style="position: absolute; top: -11vw; left: -2vw"></div>
+					<div id="red_parking_end_1" class="parking"></div>
+					<div id="red_parking_end_2" class="parking"></div>
 				</span>
 			</td></tr>
         </table>
-        <table id="red_skystone_count" class="stone_counters counter" ontouchstart="onSkyStoneClick(event)" onclick="onSkyStoneClick(event)">
+        <table id="red_skystone_count" class="stone_counters counter">
             <tr><td><img width="100%" src="Skystone.png"/></td></tr>
 			<tr><td align="center">0</td></tr>
 		</table>
 		
-        <table id="red_stone_count" class="stone_counters counter" ontouchstart="onStoneClick(event)" onclick="onStoneClick(event)">
+        <table id="red_stone_count" class="stone_counters counter">
             <tr><td colspan="2"><img width="100%" src="Stone.png"/></td></tr>
 			<tr><td align="center">0</td><td align="center">0</td></tr>
         </table>
@@ -1083,7 +1109,7 @@
 </tr>
 
 <tr>
-	<td colspan="2" valign="top" align="center">
+	<td colspan="2" valign="top" align="center" width="40vw">
         <span id="message">&nbsp;</span>
 	</td>
 </tr>
