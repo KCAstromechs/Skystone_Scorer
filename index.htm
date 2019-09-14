@@ -1,7 +1,5 @@
 <html>
 
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
 <link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet">
 
 <style>
@@ -51,6 +49,20 @@
 	.skystone_color {
 		color: #105369;
 	}
+	.skystone_color_shadowed {
+		color: #105369;
+		text-shadow: 0.2vmin 0.2vmin 0.4vmin #A1C3D0;
+	}
+	
+	#countdown {
+		font-size: 3vh;
+		color: #105369;
+		text-shadow: 0.2vmin 0.2vmin 0.4vmin #A1C3D0;
+		position: absolute;
+		padding-left: 1vh;
+		padding-top: 1.5vh;
+	}
+
 	.skystone_color_shadowed {
 		color: #105369;
 		text-shadow: 0.2vmin 0.2vmin 0.4vmin #A1C3D0;
@@ -114,11 +126,7 @@
 	}
 
 	#buttonRefresh {
-		color: black;
-		width: 0;
-		align: right;
-		background-color: ghostwhite;
-		padding: 0;
+		background-color: #fff;
 	}
 	#iconRefresh {
 		color: black;
@@ -129,11 +137,7 @@
 		margin: 0;
 	}
 	#buttonPP {
-		color: black;
-		width: 0;
-		align: left;
-		background-color: ghostwhite;
-		padding: 0;
+		background-color: #fff;
 	}
 	#iconPP {
 		color: black;
@@ -305,9 +309,9 @@
 
 	.cap {
 		position: relative;
-		top: -2vh;
-		width: 5vh;
-		height: 5vh;
+		top: -1vh;
+		width: 4vmax;
+		height: 4vmax;
 		border: 0;
 		background-image: url(cap.png);
 		background-size: 100% 100%;
@@ -382,30 +386,10 @@
 		background-color: #AAA;
 		margin-top: 5vh;
 	}
-
-	.material-icons {
-	  font-family: 'Material Icons';
-	  font-weight: normal;
-	  font-style: normal;
-	  font-size: 24px;  /* Preferred icon size */
-	  display: inline-block;
-	  line-height: 1;
-	  text-transform: none;
-	  letter-spacing: normal;
-	  word-wrap: normal;
-	  white-space: nowrap;
-	  direction: ltr;
-
-	  /* Support for all WebKit browsers. */
-	  -webkit-font-smoothing: antialiased;
-	  /* Support for Safari and Chrome. */
-	  text-rendering: optimizeLegibility;
-
-	  /* Support for Firefox. */
-	  -moz-osx-font-smoothing: grayscale;
-
-	  /* Support for IE. */
-	  font-feature-settings: 'liga';
+	
+	.circleIcon {
+		border: 0px;
+		height: 7vh;
 	}
 </style>
 
@@ -924,23 +908,24 @@
 
 
 	var timer = null;
-	var phase = 0;      // -2 = not started, 0 = not started, 5 = finished
+	var phase = 0;      // 0 = not started, 5 = finished
 						// 1 = auto (0:30), 2 = between (0:05), 3 = teleop (1:30), 4 = endgame (0:30)
+						// negative when paused
 	var timeStart = 0;
 	function onPlayPause()
 	{
 		var btn = elByID("iconPP");
 
-		if (btn.innerHTML.indexOf("play") > -1)
+		if (btn.src.indexOf("play") > -1)
 		{
-			elByID("auto").style.visibility = "visible";
-			elByID("teleop").style.visibility = "visible";
+			// Playing...
+			onAuto();
 
-			btn.innerHTML = "pause_circle_outline";
+			btn.src = "pause_circle_outline.svg";
 
 			if (phase == 0)
 			{
-				// Start cycle
+				// Starting
 				phase += 1;
 				timeStart = new Date().getTime();
 
@@ -961,7 +946,7 @@
 			}
 			else
 			{
-				// Unpause
+				// Unpausing
 				phase = -phase;
 				timeStart = new Date().getTime()-timeStart;
 			}
@@ -969,8 +954,8 @@
 		}
 		else
 		{
-			// Cycle is complete
-			btn.innerHTML = "play_circle_outline";
+			// Pausing...
+			btn.src = "play_circle_outline.svg";
 			phase = -phase;
 			timeStart = new Date().getTime()-timeStart;
 		}
@@ -978,7 +963,7 @@
 
 	function onClockUpdate()
 	{
-		var lbl = elByID("phase");
+		var lbl = elByID("countdown");
 		var elapsed;
 
 		if (phase < 0 || phase == 5)
@@ -1024,6 +1009,7 @@
 		{
 			// Game over!
 			lbl.innerHTML = "0:00";
+			elByID("buttonPP").style.visibility = "hidden";
 			return;
 		}
 		var remaining = Math.round((dur+bonus) - elapsed/1000);
@@ -1040,7 +1026,7 @@
 			timeStart = new Date().getTime();
 
 			if (phase == 2)
-				elByID("auto").style.backgroundColor="#aaa";
+				elByID("auto").style.backgroundColor = INACTIVE_COLOR;
 			else if (phase == 3)
 				onTeleOp();
 			else if (phase == 4)
@@ -1060,7 +1046,7 @@
 	<td id="red_score" align="right">0</td></tr>
 
 <tr style="vertical-align:top">
-	<td style="background-color:fff" rowspan="2">
+	<td width="15vw" style="background-color:fff" rowspan="2">
 		<table>
 			<tr><td><span style="position: relative;">
 						<img class="corner_img" src="Corner_blue.png"/>
@@ -1084,7 +1070,7 @@
 			<tr><td align="center">0</td><td align="center">0</td></tr>
 		</table>
 	</td>
-	<td width="40vw" colspan="2">
+	<td width="60vw" colspan="2">
 		<div class="foundation_container">
 			<table class="foundation blue counter" id="blue_foundation">
 				<tr><td/><td/></tr>
@@ -1108,7 +1094,7 @@
 			</table>
 		</div>
 	</td>
-	<td style="background-color:fff" rowspan="2" align="right">
+	<td width="15vw" style="background-color:fff" rowspan="2" align="right">
 		<table>
 			<tr><td>
 				<span style="position: relative;">
@@ -1134,7 +1120,7 @@
 </tr>
 
 <tr>
-	<td colspan="2" valign="top" align="center" width="40vw">
+	<td colspan="2" valign="top" align="center" width="60vw">
 		<span id="message">&nbsp;</span>
 	</td>
 </tr>
@@ -1188,21 +1174,19 @@
 </tr>
 
 <tr>
-	<td align="center">
+	<td>
 		<button id="buttonPP" onclick="onPlayPause()">
-			<i id="iconPP" class="material-icons">play_circle_outline</i>
+			<img id="iconPP" class="circleIcon" src="play_circle_outline.svg"></img>
 		</button>
 	</td>
-	<td colspan=2>
-		<center>
+	<td colspan=2 align="center" width="60vw" style="position: relative">
 		<button id="auto" onclick="onAuto()">Auto</button>
 		<button id="teleop" onclick="onTeleOp()">TeleOp</button>
-		<span id="phase" class="skystone_color_shadowed">&nbsp;</span>
-		</center>
+		<span id="countdown">&nbsp;</span>
 	</td>
-	<td align="center">
+	<td align="right">
 		<button id="buttonRefresh" onclick="location.reload()">
-			<i id="iconRefresh" class="material-icons">refresh</i>
+			<img id="iconPP" class="circleIcon" src="refresh.svg"></img>
 		</button>
 	</td>
 </tr>
