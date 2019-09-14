@@ -586,8 +586,8 @@
 				cell.classList.add("capped1");
 
 			cap.style.position = "absolute";
-			cap.style.top = cell.getBoundingClientRect().top; 			// cell.offsetTop;
-			cap.style.left = cell.getBoundingClientRect().left + xOfs; 	// cell.offsetLeft;
+			cap.style.top = window.scrollY + cell.getBoundingClientRect().top;
+			cap.style.left = window.scrollX + cell.getBoundingClientRect().left + xOfs;
 			cap.style.zIndex = 99;
 			cap = null;
 			calcScore();
