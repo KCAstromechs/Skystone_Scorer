@@ -2,172 +2,172 @@
 
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
-<link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet"> 
+<link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet">
 
 <style>
-    body {
-        scroll: none;
-        font-family: sans-serif;
+	body {
+		scroll: none;
+		font-family: sans-serif;
 		font-size: 100%;  /* Fallback in case vw/vh isn't supported */
-    }
+	}
 
-    #red_score {
-        color: darkred;
-        font-size: 5vh;
+	#red_score {
+		color: darkred;
+		font-size: 5vh;
 		font-family: Rubik;
 		font-weight: 800;
-        text-shadow: 0.2vmax 0.2vmax 0.2vmax rgba(150, 150, 150, 0.5);
-    }
+		text-shadow: 0.2vmax 0.2vmax 0.2vmax rgba(150, 150, 150, 0.5);
+	}
 
-    #blue_score {
-        color: blue;
-        font-size: 5vh;
+	#blue_score {
+		color: blue;
+		font-size: 5vh;
 		font-family: Rubik;
 		font-weight: 800;
-        text-shadow: 0.2vmax 0.2vmax 0.2vmax rgba(150, 150, 150, 0.5);
-    }
-	
+		text-shadow: 0.2vmax 0.2vmax 0.2vmax rgba(150, 150, 150, 0.5);
+	}
+
 	.counter {
 		font-size: 2.5vmax;
 		font-family: Rubik;
 		font-weight: 800;
-        text-shadow: 0.2vmax 0.2vmax 1vmax rgba(0, 0, 0, 0.8);
+		text-shadow: 0.2vmax 0.2vmax 1vmax rgba(0, 0, 0, 0.8);
 		color: #cc0;
 	}
 
 
-    h1 {
-        width: 100%;
-        font-size: 5vh;
-        text-align: center;
-        margin-bottom: 0;
-        text-shadow: 0.2vmin 0.2vmin 0.4vmin #000;
-    }
-	
+	h1 {
+		width: 100%;
+		font-size: 5vh;
+		text-align: center;
+		margin-bottom: 0;
+		text-shadow: 0.2vmin 0.2vmin 0.4vmin #000;
+	}
+
 	#logo {
 		height: 5vh;
 	}
-	
+
 	.skystone_color {
 		color: #105369;
 	}
 	.skystone_color_shadowed {
 		color: #105369;
-        text-shadow: 0.2vmin 0.2vmin 0.4vmin #A1C3D0;
+		text-shadow: 0.2vmin 0.2vmin 0.4vmin #A1C3D0;
 	}
-	
+
 	#message {
 		position: relative;
 		top: -1vmin;
 		font-size: 3vmax;
 		width: 50vw;
 		color: gray;
-        text-shadow: 0.2vmin 0.2vmin 0.4vmin #A1C3D0;
+		text-shadow: 0.2vmin 0.2vmin 0.4vmin #A1C3D0;
 	}
 
-    h2 {
-        font-size: 3vh;
-        margin: 0.5vh;
-    }
-	
+	h2 {
+		font-size: 3vh;
+		margin: 0.5vh;
+	}
+
 	.moveleft.ToMove {
 		height: 3vh;
 		width: 5vw;
-        background-image: url(MoveLeft-faint.png);
-        background-size: 100% 100%;
+		background-image: url(MoveLeft-faint.png);
+		background-size: 100% 100%;
 	}
 	.moveleft.Moved {
 		height: 3vh;
 		width: 5vw;
-        background-image: url(MoveLeft.png);
-        background-size: 100% 100%;
+		background-image: url(MoveLeft.png);
+		background-size: 100% 100%;
 	}
 	.moveright.ToMove {
 		height: 3vh;
 		width: 5vw;
-        background-image: url(MoveRight-faint.png);
-        background-size: 100% 100%;
+		background-image: url(MoveRight-faint.png);
+		background-size: 100% 100%;
 	}
 	.moveright.Moved {
 		height: 3vh;
 		width: 5vw;
-        background-image: url(MoveRight.png);
-        background-size: 100% 100%;
+		background-image: url(MoveRight.png);
+		background-size: 100% 100%;
 	}
-    
-    #credits {
-        width: 100%;
-        text-align: center;
-        padding-top: 2vh;
-        font-size: 1.5vh;
-    }
 
-    button {
-        font-size: 4vh;
-        background-color: #4CAF50; /* Green */
-        border: none;
-        color: white;
-        padding: 1vh 2vw;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-    }
-    
-    #buttonRefresh {
-        color: black;
-        width: 0;
-        align: right;
-        background-color: ghostwhite;
-        padding: 0;
-    }
-    #iconRefresh {
-        color: black;
-        font-size: 6vh;
-        vertical-align: middle;
-        align: left;
-        padding: 0;
-        margin: 0;
-    }
-    #buttonPP {
-        color: black;
-        width: 0;
-        align: left;
-        background-color: ghostwhite;
-        padding: 0;
-    }
-    #iconPP {
-        color: black;
-        font-size: 6vh;
-        vertical-align: middle;
-        align: left;
-        padding: 0;
-        margin: 0;
-    }
-	
-    .blue {
+	#credits {
+		width: 100%;
+		text-align: center;
+		padding-top: 2vh;
+		font-size: 1.5vh;
+	}
+
+	button {
+		font-size: 4vh;
+		background-color: #4CAF50; /* Green */
+		border: none;
+		color: white;
+		padding: 1vh 2vw;
+		text-align: center;
+		text-decoration: none;
+		display: inline-block;
+	}
+
+	#buttonRefresh {
+		color: black;
+		width: 0;
+		align: right;
+		background-color: ghostwhite;
+		padding: 0;
+	}
+	#iconRefresh {
+		color: black;
+		font-size: 6vh;
+		vertical-align: middle;
+		align: left;
+		padding: 0;
+		margin: 0;
+	}
+	#buttonPP {
+		color: black;
+		width: 0;
+		align: left;
+		background-color: ghostwhite;
+		padding: 0;
+	}
+	#iconPP {
+		color: black;
+		font-size: 6vh;
+		vertical-align: middle;
+		align: left;
+		padding: 0;
+		margin: 0;
+	}
+
+	.blue {
 		border-color: blue;
-    }
-    .red {
+	}
+	.red {
 		border-color: darkred;
 	}
 
-    .skybridge {
-        width: 25vw;
-        height: 1vh;
+	.skybridge {
+		width: 25vw;
+		height: 1vh;
 		margin-top: 1vh;
-        position: absolute;
+		position: absolute;
 		border-top: 0vh solid;
 		border-bottom: 0vh solid;
-    }
-	
-    .blue_glow {
+	}
+
+	.blue_glow {
 		background: #1111FF;
-		
+
 		/* Create glow effect */
 		-webkit-animation: neon_blue 1.5s ease-in-out infinite alternate;
 		-moz-animation: neon_blue 1.5s ease-in-out infinite alternate;
 		animation: neon_blue 1.5s ease-in-out infinite alternate;
-    }
+	}
 		@-webkit-keyframes neon_blue {
 		  from {
 			box-shadow: 0 0 5px #00F, 0 0 10px #CCF, 0 0 15px #CCF;
@@ -193,14 +193,14 @@
 		  }
 		}
 
-    .red_glow {
+	.red_glow {
 		background: #FF1111;
-		
+
 		/* Create glow effect */
 		-webkit-animation: neon_red 1.5s ease-in-out infinite alternate;
 		-moz-animation: neon_red 1.5s ease-in-out infinite alternate;
 		animation: neon_red 1.5s ease-in-out infinite alternate;
-    }
+	}
 		@-webkit-keyframes neon_red {
 		  from {
 			box-shadow: 0 0 5px #f00, 0 0 10px #fcc, 0 0 15px #fcc;
@@ -225,7 +225,7 @@
 			box-shadow: 0 0 2px #f00, 0 0 5px #fcc, 0 0 8px #fcc, 0 0 10px #FF1177, 0 0 17px #FF1177, 0 0 20px #FF1177, 0 0 50px #FF1177;
 		  }
 		}
-	
+
 	table {
 		/* Disable text selection, preventing numbers from highlighting when double-clicked */
 		-webkit-touch-callout: none; /* iOS Safari */
@@ -236,8 +236,8 @@
 		user-select: none;           /* Non-prefixed version, currently supported by any browser but before IE9 */
 	}
 
-    /****************** Stone table *****************/
-	
+	/****************** Stone table *****************/
+
 	.foundation_container {
 		display: -webkit-box;
 		display: -moz-box;
@@ -248,33 +248,33 @@
 		-webkit-flex-flow: row wrap;
 		justify-content: space-evenly;
 	}
-	
-    .foundation {
+
+	.foundation {
 		display: inline-block;   /* stops tables from hard wrapping */
-        position: relative;
-        width: 18vmax;
-        border: 0.1vw solid;
-        padding: 0;
-        border-spacing: 0;
-        border-collapse: collapse;
-        z-index: 99;
+		position: relative;
+		width: 18vmax;
+		border: 0.1vw solid;
+		padding: 0;
+		border-spacing: 0;
+		border-collapse: collapse;
+		z-index: 99;
 
 		text-align: center;
 		vertical-align: middle;
 		margin: auto;
 		margin-bottom: 20px;
-    }
-	
+	}
+
 	.foundation td {
 		-webkit-background-size: cover;
 		-moz-background-size: cover;
 		-o-background-size: cover;
 		background-size: cover;
-        height: 4vmax;
+		height: 4vmax;
 		width: 9vmax;
-        border: 0.1vw solid black;
+		border: 0.1vw solid black;
 	}
-	
+
 	.foundation td.filled {
 		background-image: url(Stone.png);
 		color: #000;
@@ -287,134 +287,159 @@
 		border-right-width: 5px;
 	}
 
-	
+
 	.foundation.blue td.empty {
 		background-image: url(BlueFoundation.png);
 	}
-	
+
 	.foundation.red td.empty {
 		background-image: url(RedFoundation.png);
 	}
 
 	.parking {
-        width: 5vh;
-        height: 5vh;
-        border: 0.1vw solid;
+		width: 5vh;
+		height: 5vh;
+		border: 0.1vw solid;
 		border-color: black;
 	}
-	
+
 	.cap {
 		position: relative;
 		top: -2vh;
-        width: 5vh;
-        height: 5vh;
-        border: 0;
-        background-image: url(cap.png);
-        background-size: 100% 100%;
+		width: 5vh;
+		height: 5vh;
+		border: 0;
+		background-image: url(cap.png);
+		background-size: 100% 100%;
 	}
 	.cap_holder {
-        width: 5vh;
-        height: 5vh;
+		width: 5vh;
+		height: 5vh;
 	}
 
 	#blue_parking_end_1 {
 		position: absolute;
-        width: 4vw;
-        height: 4vw;
+		width: 4vw;
+		height: 4vw;
 		top: -13vw;
 		left: 5.5vw;
-        border: 0.1vw solid;
+		border: 0.1vw solid;
 		border-color: black;
 	}
 	#blue_parking_end_2 {
 		position: absolute;
-        width: 4vw;
-        height: 4vw;
+		width: 4vw;
+		height: 4vw;
 		top: -8vw;
 		left: 0.5vw;
-        border: 0.1vw solid;
+		border: 0.1vw solid;
 		border-color: black;
 	}
 
 	#red_parking_end_1 {
 		position: absolute;
-        width: 4vw;
-        height: 4vw;
+		width: 4vw;
+		height: 4vw;
 		top: -13vw;
 		right: 6vw;
-        border: 0.1vw solid;
+		border: 0.1vw solid;
 		border-color: black;
 	}
 	#red_parking_end_2 {
 		position: absolute;
-        width: 4vw;
-        height: 4vw;
+		width: 4vw;
+		height: 4vw;
 		top: -8vw;
 		right: 1vw;
-        border: 0.1vw solid;
+		border: 0.1vw solid;
 		border-color: black;
 	}
 
-    .auto {
-        background-image: url(auto.png);
-        background-size: 100% 100%;
-    }
-    .key {
-        background-image: url(key.png);
-        background-size: 100% 100%;
-    }
-    .parked {
-        background-image: url(Parked.png);
-        background-size: 100% 100%;
-    }
-    .topark {
-        background-image: url(ToPark.png);
-        background-size: 100% 100%;
-    }
+	.auto {
+		background-image: url(auto.png);
+		background-size: 100% 100%;
+	}
+	.key {
+		background-image: url(key.png);
+		background-size: 100% 100%;
+	}
+	.parked {
+		background-image: url(Parked.png);
+		background-size: 100% 100%;
+	}
+	.topark {
+		background-image: url(ToPark.png);
+		background-size: 100% 100%;
+	}
 
-    .corner_img {
-        width: 15vw;
+	.corner_img {
+		width: 15vw;
 		height: 15vw;
 		position: relative;
-    }
+	}
 
-    .stone_counters {
-        background-color: #AAA;
-        margin-top: 5vh;
-    }
+	.stone_counters {
+		background-color: #AAA;
+		margin-top: 5vh;
+	}
+
+	.material-icons {
+	  font-family: 'Material Icons';
+	  font-weight: normal;
+	  font-style: normal;
+	  font-size: 24px;  /* Preferred icon size */
+	  display: inline-block;
+	  line-height: 1;
+	  text-transform: none;
+	  letter-spacing: normal;
+	  word-wrap: normal;
+	  white-space: nowrap;
+	  direction: ltr;
+
+	  /* Support for all WebKit browsers. */
+	  -webkit-font-smoothing: antialiased;
+	  /* Support for Safari and Chrome. */
+	  text-rendering: optimizeLegibility;
+
+	  /* Support for Firefox. */
+	  -moz-osx-font-smoothing: grayscale;
+
+	  /* Support for IE. */
+	  font-feature-settings: 'liga';
+	}
 </style>
 
 <script>
 	var ACTIVE_COLOR = "#4CAF50";
 	var INACTIVE_COLOR = "#aaa";
-    var isAuto = true;
+	var isAuto = true;
 	var editing = true;			// "Editing" is for when you aren't timing a match
 	var bouncer = null;
 	var prevent_bounceTime = Date.now();
-	
+
 	function elByID(id)
 	{
 		return document.getElementById(id);
 	}
 
-    function reset_park(id)
+	function reset_park(id)
 	{
 		var el = elByID(id);
-		
+
 		el.classList.add("ToPark");
 		el.classList.remove("Parked");
 	}
-    function reset_move(id)
+	function reset_move(id)
 	{
 		var el = elByID(id);
-		
+
 		el.classList.add("ToMove");
 		el.classList.remove("Moved");
 	}
-	
+
 	function onAutoParkClick(ev)
 	{
-        event.preventDefault();     // prevents duplicate onclick if touchscreen
+		event.preventDefault();     // prevents duplicate onclick if touchscreen
 
 		if (prevent_bounce("park"))
 			return;
@@ -424,26 +449,26 @@
 			flashMessage("Only during Auto")
 			return;
 		}
-		
+
 		var el = ev.target;
 		el.classList.toggle("ToPark");
 		el.classList.toggle("Parked");
 		calcScore();
 	}
-	
+
 	function onEndParkClick(ev)
 	{
-        event.preventDefault();     // prevents duplicate onclick if touchscreen
+		event.preventDefault();     // prevents duplicate onclick if touchscreen
 
 		if (prevent_bounce("park"))
 			return;
-	
+
 		var el = ev.target;
 		el.classList.toggle("ToPark");
 		el.classList.toggle("Parked");
 		calcScore();
 	}
-	
+
 	function flashMessage(msg)
 	{
 		showMessage(msg);
@@ -454,14 +479,14 @@
 	{
 		if (!msg || msg == "")
 			msg = "&nbsp;"
-		
+
 		elByID("message").innerHTML = msg;
 	}
 
 	var cap = null;
 	function onCapClick(ev)
 	{
-        event.preventDefault();     // prevents duplicate onclick if touchscreen
+		event.preventDefault();     // prevents duplicate onclick if touchscreen
 		if (prevent_bounce("capping"))
 			return;
 
@@ -476,7 +501,7 @@
 			cap = ev.target;
 		}
 	}
-	
+
 	function getParent(el, selector, stopSelector)
 	{
 		if (!el)
@@ -487,44 +512,44 @@
 			return null;
 		return getParent(el.parentElement, selector);
 	}
-	
+
 	function prevent_bounce(name)
 	{
 		var now = Date.now();
-		
-		if (name == bouncer && prevent_bounceTime && now-prevent_bounceTime < 250) 
+
+		if (name == bouncer && prevent_bounceTime && now-prevent_bounceTime < 250)
 			return true;	// can't click faster than once every 250ms
-			
+
 		bouncer = name;
 		prevent_bounceTime = now;
 		return false;
 	}
-	
+
 	function onSkyStoneClick(event)
 	{
 		var el = event.target;
-        event.preventDefault();     // prevents duplicate onclick if touchscreen
+		event.preventDefault();     // prevents duplicate onclick if touchscreen
 
 		if (prevent_bounce("skyStone"))
 			return;
-		
+
 		if (!isAuto)
 		{
 			flashMessage("Only possible during Auto");
 			return;
 		}
 
-		
+
 		var elTable = getParent(el, "table");
 		elTable.rows[1].cells[0].innerHTML = (Number(elTable.rows[1].cells[0].innerHTML) + 1) % 3;
 		calcScore();
 	}
-	
+
 	function onStoneClick(event)
 	{
 		var el = event.target;
-        event.preventDefault();     // prevents duplicate onclick if touchscreen
-	
+		event.preventDefault();     // prevents duplicate onclick if touchscreen
+
 		if (prevent_bounce("stone"))
 			return;
 
@@ -535,27 +560,27 @@
 			elTable.rows[1].cells[1].innerHTML = Number(elTable.rows[1].cells[1].innerHTML) + 1;
 		calcScore();
 	}
-	
+
 	function onFoundationClick(event)
 	{
 		var cell = event.target;
 		var elTable = getParent(cell, "table");
-        event.preventDefault();     // prevents duplicate onclick if touchscreen
+		event.preventDefault();     // prevents duplicate onclick if touchscreen
 
 		if (prevent_bounce("Foundation"))
 			return;
-		
+
 		r = cell.parentElement.rowIndex;
 		c = cell.cellIndex;
 
 		var cur = "" + elTable.rows[r].cells[c].innerHTML;
 		var cAuto = 0;
 		var cTeleop = 0;
-		
+
 		if (cap)
 		{
 			showMessage("");
-			
+
 			if (cap.tower)
 			{
 				// Uncapping a previously capped tower
@@ -566,7 +591,7 @@
 			}
 			cap.tower = cell;
 
-			
+
 			var xOfs = 0;
 			if (cell.classList.contains("capped1"))
 			{
@@ -584,7 +609,7 @@
 			calcScore();
 			return;
 		}
-		
+
 		if (cur.includes('('))
 		{
 			var asplit = cur.replace("(","").replace(")","").split("&nbsp;&nbsp;&nbsp;&nbsp;");
@@ -597,12 +622,12 @@
 			cTeleop = 0;
 		if (isNaN(cAuto))
 			cAuto = 0;
-		
+
 		if (isAuto)
 			cAuto += 1;
 		else
 			cTeleop += 1;
-		
+
 		if (cAuto)
 			v = "("+cAuto+")&nbsp;&nbsp;&nbsp;&nbsp;"+cTeleop;
 		else if (cTeleop)
@@ -610,17 +635,17 @@
 		else
 			v = "&nbsp;"
 		elTable.rows[r].cells[c].innerHTML = v;
-		
+
 		cell.classList.remove("empty");
 		cell.classList.add("filled");
-		
+
 		calcScore();
 	}
-	
+
 	function onPlatformIn(ev)
 	{
-        event.preventDefault();     // prevents duplicate onclick if touchscreen
-		
+		event.preventDefault();     // prevents duplicate onclick if touchscreen
+
 		if (!isAuto && !editing)
 		{
 			flashMessage("Only during Auto")
@@ -634,15 +659,15 @@
 	}
 	function onPlatformOut(ev)
 	{
-        event.preventDefault();     // prevents duplicate onclick if touchscreen
-	
+		event.preventDefault();     // prevents duplicate onclick if touchscreen
+
 		var el = ev.target;
 		el.classList.toggle("ToMove");
 		el.classList.toggle("Moved");
 		calcScore();
 	}
 
-    function reset()
+	function reset()
 	{
 		elByID("blue_skystone_count").rows[1].cells[0].innerHTML = 0;
 		elByID("red_skystone_count").rows[1].cells[0].innerHTML = 0;
@@ -662,7 +687,7 @@
 				blueFoundation.rows[r].cells[c].innerHTML = "&nbsp;";
 				blueFoundation.rows[r].cells[c].className = "empty";
 			}
-		
+
 		reset_park("red_parking_auto_1");
 		reset_park("red_parking_auto_2");
 		reset_park("blue_parking_auto_1");
@@ -670,22 +695,22 @@
 		reset_park("blue_parking_end_1");
 		reset_park("blue_parking_end_2");
 		reset_park("red_parking_end_1");
-		reset_park("red_parking_end_2");		
-		
+		reset_park("red_parking_end_2");
+
 		reset_move("blue_platform_in");
 		reset_move("blue_platform_out");
 		reset_move("red_platform_in");
 		reset_move("red_platform_out");
 	}
-	
+
 	function hookup_Click(el, listener)
 	{
 		el.addEventListener('touchstart', function(e) { listener(e, e.target) } );
 		el.addEventListener('click', function(e) { listener(e, e.target) } );
 	}
-	
-    function init()
-    {
+
+	function init()
+	{
 		var redFoundation = elByID("red_foundation");
 		var blueFoundation = elByID("blue_foundation");
 		for (var c=0; c < 2; c++)
@@ -693,9 +718,9 @@
 			{
 				hookup_Click(redFoundation.rows[r].cells[c], onFoundationClick);
 				hookup_Click(blueFoundation.rows[r].cells[c], onFoundationClick);
-			}	
-        elByID("blue_foundation").addEventListener('touchstart', preventZoom);
-        elByID("red_foundation").addEventListener('touchstart', preventZoom);
+			}
+		elByID("blue_foundation").addEventListener('touchstart', preventZoom);
+		elByID("red_foundation").addEventListener('touchstart', preventZoom);
 
 		hookup_Click(elByID("blue_parking_auto_1"), onAutoParkClick);
 		hookup_Click(elByID("blue_parking_auto_2"), onAutoParkClick);
@@ -711,45 +736,45 @@
 		hookup_Click(elByID("blue_skystone_count"), onSkyStoneClick);
 		hookup_Click(elByID("blue_stone_count"), onStoneClick);
 		hookup_Click(elByID("red_stone_count"), onStoneClick);
-		
+
 		hookup_Click(elByID("blue_platform_in"), onPlatformIn);
 		hookup_Click(elByID("red_platform_in"), onPlatformIn);
 		hookup_Click(elByID("blue_platform_out"), onPlatformOut);
 		hookup_Click(elByID("red_platform_out"), onPlatformOut);
-		
+
 		hookup_Click(elByID("blue_parking_end_1"), onEndParkClick);
 		hookup_Click(elByID("blue_parking_end_2"), onEndParkClick);
 		hookup_Click(elByID("red_parking_end_1"), onEndParkClick);
 		hookup_Click(elByID("red_parking_end_2"), onEndParkClick);
-	
+
 		reset();
-        elByID("auto").style.backgroundColor = ACTIVE_COLOR;
-        elByID("teleop").style.backgroundColor = INACTIVE_COLOR
+		elByID("auto").style.backgroundColor = ACTIVE_COLOR;
+		elByID("teleop").style.backgroundColor = INACTIVE_COLOR
 
-        calcScore();
-    }
-    
-    function preventZoom(e) {
-      var t2 = e.timeStamp;
-      var t1 = e.currentTarget.dataset.lastTouch || t2;
-      var dt = t2 - t1;
-      var fingers = e.touches.length;
-      e.currentTarget.dataset.lastTouch = t2;
+		calcScore();
+	}
 
-      if (!dt || dt > 500 || fingers > 1) return; // not double-tap
+	function preventZoom(e) {
+	  var t2 = e.timeStamp;
+	  var t1 = e.currentTarget.dataset.lastTouch || t2;
+	  var dt = t2 - t1;
+	  var fingers = e.touches.length;
+	  e.currentTarget.dataset.lastTouch = t2;
 
-      e.preventDefault();
-      e.target.click();
-    }
+	  if (!dt || dt > 500 || fingers > 1) return; // not double-tap
 
-    function onTeleOp()
-    {
-        isAuto = false;
-		
-        elByID("auto").style.backgroundColor = INACTIVE_COLOR;
-        elByID("teleop").style.backgroundColor = ACTIVE_COLOR;
-    }
-	
+	  e.preventDefault();
+	  e.target.click();
+	}
+
+	function onTeleOp()
+	{
+		isAuto = false;
+
+		elByID("auto").style.backgroundColor = INACTIVE_COLOR;
+		elByID("teleop").style.backgroundColor = ACTIVE_COLOR;
+	}
+
 	function onEndGame()
 	{
 		elByID("blue_platform_out").style.visibility = "visible";
@@ -764,32 +789,32 @@
 		elByID("red_cap_2").style.visibility = "visible";
 	}
 
-    function onAuto()
-    {
-        isAuto = true;
+	function onAuto()
+	{
+		isAuto = true;
 
-        elByID("auto").style.backgroundColor = ACTIVE_COLOR;
-        elByID("teleop").style.backgroundColor = INACTIVE_COLOR
-    }
+		elByID("auto").style.backgroundColor = ACTIVE_COLOR;
+		elByID("teleop").style.backgroundColor = INACTIVE_COLOR
+	}
 
-    function calcScore()
-    {
-        var red=0;
-        var blue=0;
-		
+	function calcScore()
+	{
+		var red=0;
+		var blue=0;
+
 		//////////////////////////////////////////////////////////////////////
-        // Score Autonomous
+		// Score Autonomous
 		blue += elByID("blue_platform_in").classList.contains("Moved") ? 10 : 0;
 		red += elByID("red_platform_in").classList.contains("Moved") ? 10 : 0;
-		
+
 		blue += elByID("blue_platform_in").classList.contains("Moved") ? 10 : 0;
-		
+
 		red += 10 * Number(elByID("red_skystone_count").rows[1].cells[0].innerHTML);
 		red += 2 * Number(elByID("red_stone_count").rows[1].cells[0].innerHTML);
-		
+
 		blue += 10 * Number(elByID("blue_skystone_count").rows[1].cells[0].innerHTML);
 		blue += 2 * Number(elByID("blue_stone_count").rows[1].cells[0].innerHTML);
-	
+
 		blue += elByID("blue_parking_auto_1").classList.contains("Parked") ? 5 : 0;
 		blue += elByID("blue_parking_auto_2").classList.contains("Parked") ? 5 : 0;
 		red += elByID("red_parking_auto_1").classList.contains("Parked") ? 5 : 0;
@@ -799,7 +824,7 @@
 		red += 1 * Number(elByID("red_stone_count").rows[1].cells[1].innerHTML);
 		blue += 1 * Number(elByID("blue_stone_count").rows[1].cells[1].innerHTML);
 
-        // Score Endgame
+		// Score Endgame
 		blue += elByID("blue_platform_out").classList.contains("Moved") ? 15 : 0;
 		red += elByID("red_platform_out").classList.contains("Moved") ? 15 : 0;
 
@@ -818,7 +843,7 @@
 				var cur = "" + cell.innerHTML;
 				var cAuto = 0;
 				var cTeleop = 0;
-				
+
 				if (cur.includes('('))
 				{
 					var asplit = cur.replace("(","").replace(")","").split("&nbsp;&nbsp;&nbsp;&nbsp;");
@@ -831,13 +856,13 @@
 					cTeleop = 0;
 				if (isNaN(cAuto))
 					cAuto = 0;
-					
+
 				red += 4*cAuto;
 				red += 1*cTeleop;
-				
+
 				if (cAuto+cTeleop > cTallest)
 					cTallest = cAuto+cTeleop;
-					
+
 				if (cell.classList.contains("capped1"))
 				{
 					// Calc the cap score
@@ -860,7 +885,7 @@
 				var cur = "" + cell.innerHTML;
 				var cAuto = 0;
 				var cTeleop = 0;
-				
+
 				if (cur.includes('('))
 				{
 					var asplit = cur.replace("(","").replace(")","").split("&nbsp;&nbsp;&nbsp;&nbsp;");
@@ -873,13 +898,13 @@
 					cTeleop = 0;
 				if (isNaN(cAuto))
 					cAuto = 0;
-					
+
 				blue += 4*cAuto;
 				blue += 1*cTeleop;
-				
+
 				if (cAuto+cTeleop > cTallest)
 					cTallest = cAuto+cTeleop;
-					
+
 				if (cell.classList.contains("capped1"))
 				{
 					// Calc the cap score
@@ -893,32 +918,32 @@
 			}
 		blue += 2*cTallest;
 
-        elByID("blue_score").innerHTML = blue;
-        elByID("red_score").innerHTML = red;
-    }
+		elByID("blue_score").innerHTML = blue;
+		elByID("red_score").innerHTML = red;
+	}
 
 
-    var timer = null;
-    var phase = 0;      // -2 = not started, 0 = not started, 5 = finished
-                        // 1 = auto (0:30), 2 = between (0:05), 3 = teleop (1:30), 4 = endgame (0:30)
-    var timeStart = 0;
-    function onPlayPause()
-    {
-        var btn = elByID("iconPP");
+	var timer = null;
+	var phase = 0;      // -2 = not started, 0 = not started, 5 = finished
+						// 1 = auto (0:30), 2 = between (0:05), 3 = teleop (1:30), 4 = endgame (0:30)
+	var timeStart = 0;
+	function onPlayPause()
+	{
+		var btn = elByID("iconPP");
 
-        if (btn.innerHTML.indexOf("play") > -1)
-        {
+		if (btn.innerHTML.indexOf("play") > -1)
+		{
 			elByID("auto").style.visibility = "visible";
 			elByID("teleop").style.visibility = "visible";
-			
-            btn.innerHTML = "pause_circle_outline";
-            
-            if (phase == 0)
-            {
-                // Start cycle
-                phase += 1;
-                timeStart = new Date().getTime();
-				
+
+			btn.innerHTML = "pause_circle_outline";
+
+			if (phase == 0)
+			{
+				// Start cycle
+				phase += 1;
+				timeStart = new Date().getTime();
+
 				editing = false;
 
 				// Very first time, hide elements that you can't use in Auto
@@ -928,102 +953,102 @@
 				elByID("red_platform_out").style.visibility = "hidden";
 				elByID("red_parking_end_1").style.visibility = "hidden";
 				elByID("red_parking_end_2").style.visibility = "hidden";
-				
+
 				elByID("blue_cap_1").style.visibility = "hidden";
 				elByID("blue_cap_2").style.visibility = "hidden";
 				elByID("red_cap_1").style.visibility = "hidden";
 				elByID("red_cap_2").style.visibility = "hidden";
-            }
-            else
-            {
-                // Unpause
-                phase = -phase;
-                timeStart = new Date().getTime()-timeStart;
-            }
-            timer = setInterval(onClockUpdate, 500);
-        }
-        else
-        {
-            // Cycle is complete
-            btn.innerHTML = "play_circle_outline";
-            phase = -phase;
-            timeStart = new Date().getTime()-timeStart;
-        }
-    }
-    
-    function onClockUpdate()
-    {
-        var lbl = elByID("phase");
-        var elapsed;
+			}
+			else
+			{
+				// Unpause
+				phase = -phase;
+				timeStart = new Date().getTime()-timeStart;
+			}
+			timer = setInterval(onClockUpdate, 500);
+		}
+		else
+		{
+			// Cycle is complete
+			btn.innerHTML = "play_circle_outline";
+			phase = -phase;
+			timeStart = new Date().getTime()-timeStart;
+		}
+	}
 
-        if (phase < 0 || phase == 5) 
-        {
-            // Paused
-            elapsed = timeStart;
-            if (lbl.style.color == "black")
-                lbl.style.color = "white";
-            else
-                lbl.style.color = "black";
-        }
-        else
-            elapsed = new Date().getTime()-timeStart;
-        
-        var dur = 0;
+	function onClockUpdate()
+	{
+		var lbl = elByID("phase");
+		var elapsed;
+
+		if (phase < 0 || phase == 5)
+		{
+			// Paused
+			elapsed = timeStart;
+			if (lbl.style.color == "black")
+				lbl.style.color = "white";
+			else
+				lbl.style.color = "black";
+		}
+		else
+			elapsed = new Date().getTime()-timeStart;
+
+		var dur = 0;
 		var bonus = 0;
-        if (Math.abs(phase) == 1)
-        {
-            // Autonomous
-            dur = 30;
-            lbl.style.color="blue";
-        }
-        else if (Math.abs(phase) == 2)
-        {
-            // Transition
-            dur = 8;
-            lbl.style.color="red";
-        }
-        else if (Math.abs(phase) == 3)
-        {
-            // Teleop period
-            dur = 90;
+		if (Math.abs(phase) == 1)
+		{
+			// Autonomous
+			dur = 30;
+			lbl.style.color="blue";
+		}
+		else if (Math.abs(phase) == 2)
+		{
+			// Transition
+			dur = 8;
+			lbl.style.color="red";
+		}
+		else if (Math.abs(phase) == 3)
+		{
+			// Teleop period
+			dur = 90;
 			bonus = 30;  // Show the 30 seconds for Endgame as part of teleop  count
-            lbl.style.color="blue";
-        }
-        else if (Math.abs(phase) == 4)
-        {
-            // EndGame period
-            dur = 30;
-            lbl.style.color="orange";
-        }
-        else if (Math.abs(phase) == 5)
-        {
-            // Game over!
-            lbl.innerHTML = "0:00";
-            return;
-        }
-        var remaining = Math.round((dur+bonus) - elapsed/1000);
-        var minutes = Math.floor(remaining/60);
-        var secs = remaining%60;
-        if (secs < 10)
-            secs = "0"+secs;
-        lbl.innerHTML = minutes+":"+secs;
-        
-        if (remaining-bonus <= 0)
-        {
-            // Automatically move on to the next phase
-            phase += 1;
-            timeStart = new Date().getTime();
-            
-            if (phase == 2)
-                elByID("auto").style.backgroundColor="#aaa";
-            else if (phase == 3)
-                onTeleOp();
+			lbl.style.color="blue";
+		}
+		else if (Math.abs(phase) == 4)
+		{
+			// EndGame period
+			dur = 30;
+			lbl.style.color="orange";
+		}
+		else if (Math.abs(phase) == 5)
+		{
+			// Game over!
+			lbl.innerHTML = "0:00";
+			return;
+		}
+		var remaining = Math.round((dur+bonus) - elapsed/1000);
+		var minutes = Math.floor(remaining/60);
+		var secs = remaining%60;
+		if (secs < 10)
+			secs = "0"+secs;
+		lbl.innerHTML = minutes+":"+secs;
+
+		if (remaining-bonus <= 0)
+		{
+			// Automatically move on to the next phase
+			phase += 1;
+			timeStart = new Date().getTime();
+
+			if (phase == 2)
+				elByID("auto").style.backgroundColor="#aaa";
+			else if (phase == 3)
+				onTeleOp();
 			else if (phase == 4)
 				onEndGame();
-            else if (phase > 4)
+			else if (phase > 4)
 				editing = true;
-        }
-    }
+		}
+	}
 </script>
 
 <body onpageshow="init()">
@@ -1031,35 +1056,35 @@
 <table width="100%">
 
 <tr><td id="blue_score">0</td>
-    <td colspan=2><h1><img id="logo" class="logo_img" src="Logo.png"/><font  color="#FFC300">&nbsp;Scorer</font></td>
-    <td id="red_score" align="right">0</td></tr>
+	<td colspan=2><h1><img id="logo" class="logo_img" src="Logo.png"/><font  color="#FFC300">&nbsp;Scorer</font></td>
+	<td id="red_score" align="right">0</td></tr>
 
 <tr style="vertical-align:top">
-    <td style="background-color:fff" rowspan="2">
-        <table>
-            <tr><td><span style="position: relative;">
+	<td style="background-color:fff" rowspan="2">
+		<table>
+			<tr><td><span style="position: relative;">
 						<img class="corner_img" src="Corner_blue.png"/>
-			
+
 						<div id="blue_platform_in" class="moveleft" style="position: absolute; top: -11vw; left: 11.8vw"></div>
 						<div id="blue_platform_out" class="moveright" style="position: absolute; top: -1vw; left: 3vw" ></div>
-						
+
 						<div id="blue_parking_end_1" class="parking"></div>
 						<div id="blue_parking_end_2" class="parking"></div>
 					</span>
 				</td></tr>
 
-        </table>
-		
-        <table id="blue_skystone_count" class="stone_counters counter">
-            <tr><td><img width="100%" src="Skystone.png"/></td></tr>
+		</table>
+
+		<table id="blue_skystone_count" class="stone_counters counter">
+			<tr><td><img width="100%" src="Skystone.png"/></td></tr>
 			<tr><td align="center">0</td></tr>
-        </table>
-        <table id="blue_stone_count" class="stone_counters counter">
-            <tr><td colspan="2"><img id="blue_stone" width="100%" src="Stone.png"/></td></tr>
+		</table>
+		<table id="blue_stone_count" class="stone_counters counter">
+			<tr><td colspan="2"><img id="blue_stone" width="100%" src="Stone.png"/></td></tr>
 			<tr><td align="center">0</td><td align="center">0</td></tr>
-        </table>
-    </td>
-    <td width="40vw" colspan="2">
+		</table>
+	</td>
+	<td width="40vw" colspan="2">
 		<div class="foundation_container">
 			<table class="foundation blue counter" id="blue_foundation">
 				<tr><td/><td/></tr>
@@ -1082,45 +1107,45 @@
 				<tr><td/><td/></tr>
 			</table>
 		</div>
-    </td>
-    <td style="background-color:fff" rowspan="2" align="right">
-        <table>
-            <tr><td>
+	</td>
+	<td style="background-color:fff" rowspan="2" align="right">
+		<table>
+			<tr><td>
 				<span style="position: relative;">
 					<img class="corner_img" src="Corner_red.png"/>&nbsp;
-				
+
 					<div id="red_platform_out" class="moveleft" style="position: absolute; top: -1vw; left: 7vw"></div>
 					<div id="red_platform_in" class="moveright" style="position: absolute; top: -11vw; left: -2vw"></div>
 					<div id="red_parking_end_1" class="parking"></div>
 					<div id="red_parking_end_2" class="parking"></div>
 				</span>
 			</td></tr>
-        </table>
-        <table id="red_skystone_count" class="stone_counters counter">
-            <tr><td><img width="100%" src="Skystone.png"/></td></tr>
+		</table>
+		<table id="red_skystone_count" class="stone_counters counter">
+			<tr><td><img width="100%" src="Skystone.png"/></td></tr>
 			<tr><td align="center">0</td></tr>
 		</table>
-		
-        <table id="red_stone_count" class="stone_counters counter">
-            <tr><td colspan="2"><img width="100%" src="Stone.png"/></td></tr>
+
+		<table id="red_stone_count" class="stone_counters counter">
+			<tr><td colspan="2"><img width="100%" src="Stone.png"/></td></tr>
 			<tr><td align="center">0</td><td align="center">0</td></tr>
-        </table>
-    </td>
+		</table>
+	</td>
 </tr>
 
 <tr>
 	<td colspan="2" valign="top" align="center" width="40vw">
-        <span id="message">&nbsp;</span>
+		<span id="message">&nbsp;</span>
 	</td>
 </tr>
 
 <tr>
 	<td colspan="2">
-        <span class="skybridge blue_glow" style="left:1vw"></span>
+		<span class="skybridge blue_glow" style="left:1vw"></span>
 	</td>
 
 	<td colspan="2">
-        <span class="skybridge red_glow" style="right:1vw"></span>
+		<span class="skybridge red_glow" style="right:1vw"></span>
 	</td>
 </td>
 </tr>
@@ -1134,7 +1159,7 @@
 				<td width="1%">
 					<div id="blue_parking_auto_2" class="parking"/>
 				</td>
-				
+
 				<td align="right">
 					<div class="cap_holder"><div id="blue_cap_1" class="cap"/></div>
 				</td>
@@ -1143,14 +1168,14 @@
 				</td>
 				<td>&nbsp;
 				</td>
-				
+
 				<td width="1%" align="right">
 					<div class="cap_holder"><div id="red_cap_1" class="cap"/></div>
 				</td>
 				<td>
 					<div class="cap_holder"><div id="red_cap_2" class="cap"/></div>
 				</td>
-				
+
 				<td width="1%">
 					<div id="red_parking_auto_1" class="parking"/>
 				</td>
@@ -1163,27 +1188,27 @@
 </tr>
 
 <tr>
-    <td align="center">
-        <button id="buttonPP" onclick="onPlayPause()">
-            <i id="iconPP" class="material-icons">play_circle_outline</i>
-        </button>
-    </td>
-    <td colspan=2>
-        <center>
-        <button id="auto" onclick="onAuto()">Auto</button>
-        <button id="teleop" onclick="onTeleOp()">TeleOp</button>
-        <span id="phase" class="skystone_color_shadowed">&nbsp;</span>
-        </center>
-    </td>
-    <td align="center">
-        <button id="buttonRefresh" onclick="location.reload()">
-            <i id="iconRefresh" class="material-icons">refresh</i>
-        </button>
-    </td>
+	<td align="center">
+		<button id="buttonPP" onclick="onPlayPause()">
+			<i id="iconPP" class="material-icons">play_circle_outline</i>
+		</button>
+	</td>
+	<td colspan=2>
+		<center>
+		<button id="auto" onclick="onAuto()">Auto</button>
+		<button id="teleop" onclick="onTeleOp()">TeleOp</button>
+		<span id="phase" class="skystone_color_shadowed">&nbsp;</span>
+		</center>
+	</td>
+	<td align="center">
+		<button id="buttonRefresh" onclick="location.reload()">
+			<i id="iconRefresh" class="material-icons">refresh</i>
+		</button>
+	</td>
 </tr>
 <tr><td colspan=4>
-        <div id="credits" class="skystone_color_shadowed">brought to you by #3409 - the Astromechs and #5227 - Galactech and <a href="http://www.onlinewebfonts.com">oNline Web Fonts</a></div>
-    <td></tr>
+		<div id="credits" class="skystone_color_shadowed">brought to you by #3409 - the Astromechs and #5227 - Galactech and <a href="http://www.onlinewebfonts.com">oNline Web Fonts</a></div>
+	<td></tr>
 </table>
 
 </body>
