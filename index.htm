@@ -114,7 +114,8 @@
 		font-size: 1.5vh;
 	}
 
-	button {
+	#auto,
+	#teleop {
 		font-size: 4vh;
 		background-color: #4CAF50; /* Green */
 		border: none;
@@ -122,6 +123,10 @@
 		padding: 1vh 2vw;
 		text-align: center;
 		text-decoration: none;
+		display: inline-block;
+	}
+	
+	#blue_stone_count {
 		display: inline-block;
 	}
 
@@ -385,11 +390,52 @@
 	.stone_counters {
 		background-color: #AAA;
 		margin-top: 5vh;
+		width: 9vw;
 	}
 	
 	.circleIcon {
 		border: 0px;
 		height: 7vh;
+	}
+	
+	/********************* Plus/minus button *********************/
+	
+	.number-input {
+	  border: 1px solid #ddd;
+	  display: inline-flex;
+	}
+	
+	.number-input.red {
+	}
+
+	.number-input,
+	.number-input * {
+	  box-sizing: border-box;
+	}
+
+	.number-input button {
+	  outline:none;
+	  -webkit-appearance: none;
+	  background-color: transparent;
+	  border: none;
+	  align-items: center;
+	  justify-content: center;
+	  width: 3rem;
+	  height: 3rem;
+	  cursor: pointer;
+	  margin: 0;
+	  position: relative;
+	}
+
+	.number-input button:before,
+	.number-input button:after {
+	  display: inline-block;
+	  position: absolute;
+	  content: '';
+	  width: 1rem;
+	  height: 2px;
+	  background-color: #212121;
+	  transform: translate(-50%, -50%);
 	}
 </style>
 
@@ -400,7 +446,7 @@
 	var editing = true;			// "Editing" is for when you aren't timing a match
 	var bouncer = null;
 	var prevent_bounceTime = Date.now();
-
+	
 	function elByID(id)
 	{
 		return document.getElementById(id);
@@ -486,7 +532,7 @@
 		}
 	}
 
-	function getParent(el, selector, stopSelector)
+	function findAncestor(el, selector, stopSelector)
 	{
 		if (!el)
 			return null;
@@ -494,7 +540,7 @@
 			return el;
 		if (stopSelector && el.matches(stopSelector))
 			return null;
-		return getParent(el.parentElement, selector);
+		return findAncestor(el.parentElement, selector);
 	}
 
 	function prevent_bounce(name)
@@ -524,31 +570,39 @@
 		}
 
 
-		var elTable = getParent(el, "table");
+		var elTable = findAncestor(el, "table");
 		elTable.rows[1].cells[0].innerHTML = (Number(elTable.rows[1].cells[0].innerHTML) + 1) % 3;
 		calcScore();
 	}
 
-	function onStoneClick(event)
+	function onStoneClick(event, el, decrementing)
 	{
-		var el = event.target;
 		event.preventDefault();     // prevents duplicate onclick if touchscreen
 
 		if (prevent_bounce("stone"))
 			return;
 
-		var elTable = getParent(el, "table");
-		if (isAuto)
-			elTable.rows[1].cells[0].innerHTML = Number(elTable.rows[1].cells[0].innerHTML) + 1;
+		var elTable = null;
+		var delta = 1;
+		if (decrementing)
+		{
+			elTable = elByID(decrementing);
+			delta = -1;
+		}
 		else
-			elTable.rows[1].cells[1].innerHTML = Number(elTable.rows[1].cells[1].innerHTML) + 1;
+			elTable = findAncestor(el, "table");
+			
+		if (isAuto)
+			elTable.rows[1].cells[0].innerHTML = "+"+Math.max(0, Number(elTable.rows[1].cells[0].innerHTML) + delta);
+		else
+			elTable.rows[1].cells[1].innerHTML = Math.max(0, Number(elTable.rows[1].cells[1].innerHTML) + delta);
 		calcScore();
 	}
 
 	function onFoundationClick(event)
 	{
 		var cell = event.target;
-		var elTable = getParent(cell, "table");
+		var elTable = findAncestor(cell, "table");
 		event.preventDefault();     // prevents duplicate onclick if touchscreen
 
 		if (prevent_bounce("Foundation"))
@@ -594,9 +648,9 @@
 			return;
 		}
 
-		if (cur.includes('('))
+		if (cur.includes('+'))
 		{
-			var asplit = cur.replace("(","").replace(")","").split("&nbsp;&nbsp;&nbsp;&nbsp;");
+			var asplit = cur.replace("+","").split("&nbsp;&nbsp;&nbsp;&nbsp;");
 			cAuto = Number(asplit[0]);
 			cTeleop = Number(asplit[1]);
 		}
@@ -613,7 +667,7 @@
 			cTeleop += 1;
 
 		if (cAuto)
-			v = "("+cAuto+")&nbsp;&nbsp;&nbsp;&nbsp;"+cTeleop;
+			v = "+"+cAuto+"&nbsp;&nbsp;&nbsp;&nbsp;"+cTeleop;
 		else if (cTeleop)
 			v = cTeleop;
 		else
@@ -1065,10 +1119,19 @@
 			<tr><td><img width="100%" src="Skystone.png"/></td></tr>
 			<tr><td align="center">0</td></tr>
 		</table>
+		<table>
+		<tr><td>
 		<table id="blue_stone_count" class="stone_counters counter">
 			<tr><td colspan="2"><img id="blue_stone" width="100%" src="Stone.png"/></td></tr>
 			<tr><td align="center">0</td><td align="center">0</td></tr>
 		</table>
+		</td>
+		<td valign="bottom">
+			<div class="number-input">
+				<button onclick="onStoneClick(event, this, 'blue_stone_count')"/>
+			</div></td>
+		</tr>
+		</table>		
 	</td>
 	<td width="60vw" colspan="2">
 		<div class="foundation_container">
@@ -1094,7 +1157,7 @@
 			</table>
 		</div>
 	</td>
-	<td width="15vw" style="background-color:fff" rowspan="2" align="right">
+	<td width="15vw" style="background-color:fff" rowspan="2" align="right" id="red_scorer">
 		<table>
 			<tr><td>
 				<span style="position: relative;">
@@ -1112,9 +1175,18 @@
 			<tr><td align="center">0</td></tr>
 		</table>
 
-		<table id="red_stone_count" class="stone_counters counter">
-			<tr><td colspan="2"><img width="100%" src="Stone.png"/></td></tr>
-			<tr><td align="center">0</td><td align="center">0</td></tr>
+		<table>
+			<tr><td valign="bottom">
+				<div class="number-input red">
+					<button onclick="onStoneClick(event, this, 'red_stone_count')"/>
+				</div>
+				</td>
+				<td>
+				<table id="red_stone_count" class="stone_counters counter">
+					<tr><td colspan="2"><img width="100%" src="Stone.png"/></td></tr>
+					<tr><td align="center">0</td><td align="center">0</td></tr>
+				</table>
+			</td></tr>
 		</table>
 	</td>
 </tr>
@@ -1126,11 +1198,11 @@
 </tr>
 
 <tr>
-	<td colspan="2">
+	<td colspan="2" id="blue_skybridge">
 		<span class="skybridge blue_glow" style="left:1vw"></span>
 	</td>
 
-	<td colspan="2">
+	<td colspan="2" id="red_skybridge">
 		<span class="skybridge red_glow" style="right:1vw"></span>
 	</td>
 </td>
