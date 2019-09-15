@@ -53,7 +53,7 @@
 		color: #105369;
 		text-shadow: 0.2vmin 0.2vmin 0.4vmin #A1C3D0;
 	}
-	
+
 	#countdown {
 		font-size: 3vh;
 		color: #105369;
@@ -125,14 +125,11 @@
 		text-decoration: none;
 		display: inline-block;
 	}
-	
+
 	#blue_stone_count {
 		display: inline-block;
 	}
 
-	#buttonRefresh {
-		background-color: #fff;
-	}
 	#iconRefresh {
 		color: black;
 		font-size: 6vh;
@@ -141,8 +138,11 @@
 		padding: 0;
 		margin: 0;
 	}
+
+	#buttonRefresh,
 	#buttonPP {
 		background-color: #fff;
+		border-width: 1;
 	}
 	#iconPP {
 		color: black;
@@ -392,19 +392,27 @@
 		margin-top: 5vh;
 		width: 9vw;
 	}
-	
+
+	.stone_counters table {
+	  table-layout: fixed ;
+	  width: 100% ;
+	}
+	.stone_counters td {
+	  width: 25% ;
+	}
+
 	.circleIcon {
 		border: 0px;
 		height: 7vh;
 	}
-	
+
 	/********************* Plus/minus button *********************/
-	
+
 	.number-input {
 	  border: 1px solid #ddd;
 	  display: inline-flex;
 	}
-	
+
 	.number-input.red {
 	}
 
@@ -446,7 +454,7 @@
 	var editing = true;			// "Editing" is for when you aren't timing a match
 	var bouncer = null;
 	var prevent_bounceTime = Date.now();
-	
+
 	function elByID(id)
 	{
 		return document.getElementById(id);
@@ -591,7 +599,7 @@
 		}
 		else
 			elTable = findAncestor(el, "table");
-			
+
 		if (isAuto)
 			elTable.rows[1].cells[0].innerHTML = "+"+Math.max(0, Number(elTable.rows[1].cells[0].innerHTML) + delta);
 		else
@@ -709,9 +717,9 @@
 	{
 		elByID("blue_skystone_count").rows[1].cells[0].innerHTML = 0;
 		elByID("red_skystone_count").rows[1].cells[0].innerHTML = 0;
-		elByID("red_stone_count").rows[1].cells[0].innerHTML = 0;
+		elByID("red_stone_count").rows[1].cells[0].innerHTML = "+0";
 		elByID("red_stone_count").rows[1].cells[1].innerHTML = 0;
-		elByID("blue_stone_count").rows[1].cells[0].innerHTML = 0;
+		elByID("blue_stone_count").rows[1].cells[0].innerHTML = "+0";
 		elByID("blue_stone_count").rows[1].cells[1].innerHTML = 0;
 
 		var redFoundation = elByID("red_foundation");
@@ -1004,6 +1012,7 @@
 				phase = -phase;
 				timeStart = new Date().getTime()-timeStart;
 			}
+			showMessage("");
 			timer = setInterval(onClockUpdate, 500);
 		}
 		else
@@ -1012,6 +1021,7 @@
 			btn.src = "play_circle_outline.svg";
 			phase = -phase;
 			timeStart = new Date().getTime()-timeStart;
+			showMessage("Paused.");
 		}
 	}
 
@@ -1123,7 +1133,7 @@
 		<tr><td>
 		<table id="blue_stone_count" class="stone_counters counter">
 			<tr><td colspan="2"><img id="blue_stone" width="100%" src="Stone.png"/></td></tr>
-			<tr><td align="center">0</td><td align="center">0</td></tr>
+			<tr><td align="center">+0</td><td align="center">0</td></tr>
 		</table>
 		</td>
 		<td valign="bottom">
@@ -1131,7 +1141,7 @@
 				<button onclick="onStoneClick(event, this, 'blue_stone_count')"/>
 			</div></td>
 		</tr>
-		</table>		
+		</table>
 	</td>
 	<td width="60vw" colspan="2">
 		<div class="foundation_container">
@@ -1258,7 +1268,7 @@
 	</td>
 	<td align="right">
 		<button id="buttonRefresh" onclick="location.reload()">
-			<img id="iconPP" class="circleIcon" src="refresh.svg"></img>
+			<img id="iconRefresh" class="circleIcon" src="refresh.svg"></img>
 		</button>
 	</td>
 </tr>
