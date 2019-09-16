@@ -890,9 +890,9 @@
 				var cAuto = 0;
 				var cTeleop = 0;
 
-				if (cur.includes('('))
+				if (cur.includes('+'))
 				{
-					var asplit = cur.replace("(","").replace(")","").split("&nbsp;&nbsp;&nbsp;&nbsp;");
+					var asplit = cur.replace("+","").split("&nbsp;&nbsp;&nbsp;&nbsp;");
 					cAuto = Number(asplit[0]);
 					cTeleop = Number(asplit[1]);
 				}
@@ -932,9 +932,9 @@
 				var cAuto = 0;
 				var cTeleop = 0;
 
-				if (cur.includes('('))
+				if (cur.includes('+'))
 				{
-					var asplit = cur.replace("(","").replace(")","").split("&nbsp;&nbsp;&nbsp;&nbsp;");
+					var asplit = cur.replace("+","").split("&nbsp;&nbsp;&nbsp;&nbsp;");
 					cAuto = Number(asplit[0]);
 					cTeleop = Number(asplit[1]);
 				}
