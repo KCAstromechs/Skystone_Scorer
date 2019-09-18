@@ -474,6 +474,7 @@
 	var INACTIVE_COLOR = "#aaa";
 	var isAuto = true;
 	var editing = true;			// "Editing" is for when you aren't timing a match
+	var removing = false;		// for when picking up stones or caps
 	var bouncer = null;
 	var prevent_bounceTime = Date.now();
 
@@ -542,6 +543,34 @@
 
 		elByID("message").innerHTML = msg;
 	}
+	
+	function onRemove(ev)
+	{
+		event.preventDefault();     // prevents duplicate onclick if touchscreen
+		if (prevent_bounce("remove"))
+			return;
+			
+		removing = !removing;
+
+		if (removing)
+		{
+			showMessage("Tap on the stone or cap to remove");
+			ev.target.style.borderRadius = "3vw";
+			ev.target.style.boxShadow = "0vw 0vw 3vw #0F0";
+		}
+		else
+		{
+			endRemove();
+			showMessage("Removal canceled");
+		}
+	}
+	function endRemove(ev)
+	{
+		// Update visualization
+		elByID("remove_btn").style.boxShadow = "";
+		showMessage("");
+		removing = false;
+	}
 
 	var cap = null;
 	function onCapClick(ev)
@@ -549,6 +578,28 @@
 		event.preventDefault();     // prevents duplicate onclick if touchscreen
 		if (prevent_bounce("capping"))
 			return;
+			
+		if (removing)
+		{
+			cap = ev.target;
+			
+			// Return cap
+			cap.style.position = null;
+			cap.style.top = null;
+			cap.style.left = null;
+			
+			// Uncapping a previously capped tower
+			if (cap.tower.classList.contains("capped2"))
+				cap.tower.classList.remove("capped2");
+			else if (cap.tower.classList.contains("capped1"))
+				cap.tower.classList.remove("capped1");
+			cap.tower = null;
+			cap = null;
+
+
+			endRemove();
+			return;
+		}
 
 		if (cap)
 		{
@@ -592,16 +643,23 @@
 
 		if (prevent_bounce("skyStone"))
 			return;
-
-		if (!isAuto)
+			
+		if (!removing && !isAuto)
 		{
 			flashMessage("Only possible during Auto");
 			return;
 		}
 
-
 		var elTable = findAncestor(el, "table");
-		elTable.rows[1].cells[0].innerHTML = (Number(elTable.rows[1].cells[0].innerHTML) + 1) % 3;
+		if (removing)
+		{
+			elTable.rows[1].cells[0].innerHTML = Math.max(0, Number(elTable.rows[1].cells[0].innerHTML) - 1);
+			endRemove();
+		}
+		else
+		{
+			elTable.rows[1].cells[0].innerHTML = (Number(elTable.rows[1].cells[0].innerHTML) + 1) % 3;
+		}
 		calcScore();
 	}
 
@@ -620,7 +678,14 @@
 			delta = -1;
 		}
 		else
+		{
 			elTable = findAncestor(el, "table");
+			if (removing)
+			{
+				delta = -1;
+				endRemove();
+			}
+		}
 
 		if (isAuto)
 			elTable.rows[1].cells[0].innerHTML = "+"+Math.max(0, Number(elTable.rows[1].cells[0].innerHTML) + delta);
@@ -690,11 +755,18 @@
 			cTeleop = 0;
 		if (isNaN(cAuto))
 			cAuto = 0;
+			
+		var delta = 1;
+		if (removing)
+		{
+			delta = -1;
+			endRemove();
+		}
 
 		if (isAuto)
-			cAuto += 1;
+			cAuto = Math.max(0, cAuto+delta);
 		else
-			cTeleop += 1;
+			cTeleop = Math.max(0, cTeleop+delta);
 
 		if (cAuto)
 			v = "+"+cAuto+"&nbsp;&nbsp;&nbsp;&nbsp;"+cTeleop;
@@ -704,8 +776,16 @@
 			v = "&nbsp;"
 		elTable.rows[r].cells[c].innerHTML = v;
 
-		cell.classList.remove("empty");
-		cell.classList.add("filled");
+		if (cTeleop+cAuto > 0)
+		{
+			cell.classList.remove("empty");
+			cell.classList.add("filled");
+		}
+		else
+		{
+			cell.classList.add("empty");
+			cell.classList.remove("filled");
+		}
 
 		calcScore();
 	}
@@ -799,6 +879,8 @@
 		hookup_Click(elByID("blue_cap_2"), onCapClick);
 		hookup_Click(elByID("red_cap_1"), onCapClick);
 		hookup_Click(elByID("red_cap_2"), onCapClick);
+		
+		hookup_Click(elByID("remove_btn"), onRemove);
 
 		hookup_Click(elByID("red_skystone_count"), onSkyStoneClick);
 		hookup_Click(elByID("blue_skystone_count"), onSkyStoneClick);
@@ -1041,7 +1123,7 @@
 			btn.src = "play_circle_outline.svg";
 			phase = -phase;
 			timeStart = new Date().getTime()-timeStart;
-			showMessage("Paused.");
+			showMessage("Paused");
 		}
 	}
 
@@ -1254,7 +1336,9 @@
 				<td width="1%">
 					<div class="cap_holder"><div id="blue_cap_2" class="cap"/></div>
 				</td>
-				<td>&nbsp;
+				
+				<td width="10%" align="center">
+					<img id="remove_btn" src="RemoveStone.png" style="width:5vmax;"/>
 				</td>
 
 				<td width="1%" align="right">
