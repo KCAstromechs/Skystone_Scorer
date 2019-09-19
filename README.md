@@ -1,9 +1,10 @@
-# Skystone_Scorer
+# Skystone Scorer
 Scorer / Timer webapp for the FTC Skystone game
 
-<img src="preview_DesktopLayout.png" width="85%"/>
+[<img src="preview_DesktopLayout.png" width="85%"/>](https://raw.githack.com/KCAstromechs/Skystone_Scorer/master/index.htm)
 
-Run directly from this repo via https://raw.githack.com/KCAstromechs/Skystone_Scorer/master/index.htm
+
+[Run directly from this repo](https://raw.githack.com/KCAstromechs/Skystone_Scorer/master/index.htm)
 
 # Usage
 
@@ -18,7 +19,6 @@ You can use this scorer in two ways:
    * After the match completes all scoring elements can be adjusted to obtain final score.
 
 # TODO:
-* Add ability to remove placed Stones
 * More tweaking of the layout to better fit differerent devices/orientations.
 * Ability to signify "robot touching" or "not locked" to invalidate skyscraper
 * Returned stone counters
