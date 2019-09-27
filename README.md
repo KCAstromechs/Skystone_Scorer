@@ -27,4 +27,4 @@ You can use this scorer in two ways:
 * Possibility of recording stone orientation when stacking
 * Sounds for start/end when using the timer
 * A standard match report
-* Help button, lead to popup explaining usage.
+* Help button, leads to popup explaining usage.
