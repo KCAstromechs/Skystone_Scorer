@@ -21,11 +21,10 @@ You can use this scorer in two ways:
 # TODO:
 * More tweaking of the layout to better fit differerent devices/orientations.
 * Ability to signify "robot touching" or "not locked" to invalidate skyscraper
-* Returned stone counters
 
-
-## Future ideas
-* Possibly a single-side mode?
-* Possibility of recording stone orientation when stacking?
-* Sounds for start/end when using the timer?
-* A standard match report?
+## Potential ideas
+* Possibly a single-side mode
+* Possibility of recording stone orientation when stacking
+* Sounds for start/end when using the timer
+* A standard match report
+* Help button, lead to popup explaining usage.
