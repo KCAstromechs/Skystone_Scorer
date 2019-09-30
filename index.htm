@@ -26,9 +26,19 @@
 */
 
     body {
-        overflow: scroll;
+        overflow: auto;
         font-family: sans-serif;
         font-size: 100%;    /* Fallback in case vw/vh isn't supported */
+    }
+
+    #logo {
+        position: fixed;
+        left: 50%;
+        top: 50vh;
+        width: 25%;
+        margin-left: calc(25% / -2);
+        opacity:0.05;
+        z-index: 0;
     }
 
     #red_score {
@@ -55,10 +65,6 @@
         text-shadow: 0.2vmin 0.2vmin 0.4vmin #000;
     }
 
-    #logo {
-        height: 5vh;
-    }
-
     .skystone_color {
         color: #105369;
     }
@@ -69,17 +75,46 @@
     }
 
     #countdown {
-        font-size: 3vh;
+        font-family: monospace;
+        font-size: 4.5vh;
         color: #105369;
         text-shadow: 0.2vmin 0.2vmin 0.4vmin #A1C3D0;
-        position: absolute;
-        padding-left: 1vh;
-        padding-top: 1.5vh;
+        display: none;
+    }
+    #linebreaker {
+        display: inline-block;
+    }
+    #countdown_label {
+        font-size: 2.5vh;
+        padding-left: 1vw;
+        color: #105369;
+        text-shadow: 0.2vmin 0.2vmin 0.4vmin #A1C3D0;
     }
 
     .skystone_color_shadowed {
         color: #105369;
         text-shadow: 0.2vmin 0.2vmin 0.4vmin #A1C3D0;
+    }
+
+    #red_parking_auto_1 {
+        position: absolute;
+        right: 15vmax;
+        top: -2vmax;
+    }
+    #red_parking_auto_2 {
+        position: absolute;
+        right: 5vmax;
+        top: 0vmax;
+    }
+    #blue_parking_auto_1 {
+        position: absolute;
+        left: 15vmax;
+        top: -2vmax;
+    }
+    #blue_parking_auto_2 {
+        position: absolute;
+        left: 5vmax;
+        top: 0vmax;
     }
 
     #message {
@@ -89,6 +124,11 @@
         width: 50vw;
         color: gray;
         text-shadow: 0.2vmin 0.2vmin 0.4vmin #A1C3D0;
+        word-wrap: unset;
+        white-space: nowrap;
+        overflow: visible;
+        text-align: center;
+        display: inline-block;
     }
 
     h2 {
@@ -133,39 +173,33 @@
 
     #auto,
     #teleop {
-        font-size: 4vh;
+        font-size: 3vh;
         background-color: #4CAF50;
-        /* Green */
         border: none;
         color: white;
         padding: 1vh 2vw;
-        text-align: center;
         text-decoration: none;
         display: inline-block;
     }
 
-    #iconRefresh {
-        color: black;
-        font-size: 6vh;
-        vertical-align: middle;
-        text-align: left;
-        padding: 0;
-        margin: 0;
-    }
-
     #buttonRefresh,
     #buttonPP {
-        background-color: #fff;
-        border-width: 1;
+        background-color: #eee;
+        border-radius: 3vmax;
+        border-width: 0;
     }
 
+    #buttonRefresh:focus,
+    #buttonPP:focus {
+        border: none;
+        outline: none;
+    }
+
+    #iconRefresh,
     #iconPP {
-        color: black;
-        font-size: 6vh;
-        vertical-align: middle;
-        text-align: left;
         padding: 0;
         margin: 0;
+        height: 5vh;
     }
 
     .blue {
@@ -179,7 +213,7 @@
     .skybridge {
         width: 25vmax;
         height: 1vh;
-        margin-top: 0vh;
+        margin-top: -1vh;
         position: absolute;
         border-top: 0vh solid;
         border-bottom: 0vh solid;
@@ -275,14 +309,15 @@
     }
 
     .stone_counters {
-        width: 8vmax;
+        width: 7.5vw;
         background-color: #AAA;
         margin-top: 2vh;
         margin-bottom: 1vh;
+        display: inline-block;
     }
 
     .stone_counters td {
-        height: 4vmax;
+        height: 3vh;
         width: 50%;
     }
 
@@ -322,20 +357,23 @@
         border-spacing: 0;
         border-collapse: collapse;
         z-index: 99;
-        text-align: center;
         vertical-align: middle;
         margin: auto;
         margin-bottom: 20px;
     }
 
     .foundation td {
+        font-size: 2vmax;
+        height: 3.5vmax;
+        width: 5.5vmax;
+        border: 0.1vw solid black;
+        text-align: justify;
+        text-align-last: justify;
+        padding: 0 1vmax;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
         background-size: cover;
-        height: 3.5vmax;
-        width: 7.5vmax;
-        border: 0.1vw solid black;
     }
 
     .foundation td.filled {
@@ -372,6 +410,10 @@
     .cap_holder {
         width: 5vmax;
         height: 5vmax;
+    }
+
+    #remove_btn {
+        width: 4.5vmax;
     }
 
     /**************** Parking indicators ****************/
@@ -425,7 +467,7 @@
     }
 
     .corner_img {
-        width: 15vmax;
+        width: 15w;
         height: 15vmax;
         position: relative;
     }
@@ -435,19 +477,38 @@
     @media (max-aspect-ratio: 3/2) {
         .foundation {
             /* xxtransform: rotate(90deg); */
-            width: calc(15vmax * 1.6);    /* 15vmax in other orientation */
+            width: calc(15vmax * 1.25);    /* 15vmax in other orientation */
         }
         .foundation td {
-            height: calc(3.5vmax * 1.6);
-            width: calc(7.5vmax * 1.6);
-            font-size: 3.5vmax;
+            height: calc(3.5vmax * 1.25);
+            width: calc(7.5vmax * 1.25 - 1vmax);
+            font-size: calc(2vmax * 1.25);
         }
 
         .stone_counters {
-            width: 15vmax;
+            width: 30vw;
+            display: inline-table;
+        }
+        .stone_counters td {
+            padding: 0.5vw;
+            font-size: 4.5vh;
+        }
+
+
+        #logo {
+            left: 15%;
+            top: 75vh;
+        }
+
+        #message {
+            height: 7vh;
+            padding: 1vh;
+        }
+
+        #linebreaker {
+            display: block;
         }
     }
-
 </style>
 
 <script>
@@ -458,6 +519,7 @@
     var removing = false; // for when picking up stones or caps
     var bouncer = null;
     var prevent_bounceTime = Date.now();
+    var auto_score_sep = " ";
 
     function elByID(id) {
         return document.getElementById(id);
@@ -528,12 +590,12 @@
         removing = !removing;
 
         if (removing) {
-            showMessage("Tap on the stone or cap to remove");
+            showMessage("Tap the stone or cap to remove");
             ev.target.style.borderRadius = "3vw";
             ev.target.style.boxShadow = "0vw 0vw 3vw #0F0";
         } else {
             endRemove();
-            showMessage("Removal canceled");
+            flashMessage("Removal canceled");
         }
     }
 
@@ -709,7 +771,7 @@
         }
 
         if (cur.includes('+')) {
-            var asplit = cur.replace("+", "").split("&nbsp;&nbsp;&nbsp;&nbsp;");
+            var asplit = cur.replace("+", "").split(auto_score_sep);
             cAuto = Number(asplit[0]);
             cTeleop = Number(asplit[1]);
         } else
@@ -731,7 +793,7 @@
             cTeleop = Math.max(0, cTeleop + delta);
 
         if (cAuto)
-            v = "+" + cAuto + "&nbsp;&nbsp;&nbsp;&nbsp;" + cTeleop;
+            v = "+" + cAuto + auto_score_sep + cTeleop;
         else if (cTeleop)
             v = cTeleop;
         else
@@ -952,7 +1014,7 @@
                 var cTeleop = 0;
 
                 if (cur.includes('+')) {
-                    var asplit = cur.replace("+", "").split("&nbsp;&nbsp;&nbsp;&nbsp;");
+                    var asplit = cur.replace("+", "").split(auto_score_sep);
                     cAuto = Number(asplit[0]);
                     cTeleop = Number(asplit[1]);
                 } else
@@ -989,7 +1051,7 @@
                 var cTeleop = 0;
 
                 if (cur.includes('+')) {
-                    var asplit = cur.replace("+", "").split("&nbsp;&nbsp;&nbsp;&nbsp;");
+                    var asplit = cur.replace("+", "").split(auto_score_sep);
                     cAuto = Number(asplit[0]);
                     cTeleop = Number(asplit[1]);
                 } else
@@ -1061,13 +1123,18 @@
                 elByID("blue_cap_2").style.visibility = "hidden";
                 elByID("red_cap_1").style.visibility = "hidden";
                 elByID("red_cap_2").style.visibility = "hidden";
+
+                elByID("auto").style.display = "none";
+                elByID("teleop").style.display = "none";
+                elByID("countdown").style.display = "inline-block";
+                elByID("countdown").innerHTML = "0:30";
             } else {
                 // Unpausing
                 phase = -phase;
                 timeStart = new Date().getTime() - timeStart;
             }
             showMessage("");
-            timer = setInterval(onClockUpdate, 500);
+            timer = setInterval(onClockUpdate, 50);
         } else {
             // Pausing...
             btn.src = "play_circle_outline.svg";
@@ -1078,42 +1145,51 @@
     }
 
     function onClockUpdate() {
-        var lbl = elByID("countdown");
+        var clock = elByID("countdown");
+        var lbl = elByID("countdown_label");
         var elapsed;
 
         if (phase < 0 || phase == 5) {
             // Paused
             elapsed = timeStart;
-            if (lbl.style.color == "black")
-                lbl.style.color = "white";
+            if (clock.style.color == "black")
+                clock.style.color = "white";
             else
-                lbl.style.color = "black";
+                clock.style.color = "black";
         } else
             elapsed = new Date().getTime() - timeStart;
 
         var dur = 0;
         var bonus = 0;
+        var label = "";
         if (Math.abs(phase) == 1) {
             // Autonomous
             dur = 30;
-            lbl.style.color = "blue";
+            clock.style.color = "blue";
+            label = "autonomous";
         } else if (Math.abs(phase) == 2) {
             // Transition
             dur = 8;
-            lbl.style.color = "red";
+            clock.style.color = "red";
+            label = "ready..."
         } else if (Math.abs(phase) == 3) {
             // Teleop period
             dur = 90;
             bonus = 30; // Show the 30 seconds for Endgame as part of teleop  count
-            lbl.style.color = "blue";
+            clock.style.color = "blue";
+            label = "teleop"
         } else if (Math.abs(phase) == 4) {
             // EndGame period
             dur = 30;
-            lbl.style.color = "orange";
+            clock.style.color = "orange";
+            label = "endgame"
         } else if (Math.abs(phase) == 5) {
             // Game over!
-            lbl.innerHTML = "0:00";
+            clock.style.display = "none";
+            lbl.innerHTML = "&nbsp;";
             elByID("buttonPP").style.visibility = "hidden";
+            elByID("auto").style.display = null;
+            elByID("teleop").style.display = null;
             return;
         }
         var remaining = Math.round((dur + bonus) - elapsed / 1000);
@@ -1121,7 +1197,8 @@
         var secs = remaining % 60;
         if (secs < 10)
             secs = "0" + secs;
-        lbl.innerHTML = minutes + ":" + secs;
+        clock.innerHTML = minutes + ":" + secs;
+        lbl.innerHTML = label;
 
         if (remaining - bonus <= 0) {
             // Automatically move on to the next phase
@@ -1142,14 +1219,31 @@
 
 <body onpageshow="init()">
     <table width="100%">
-
         <tr>
-            <td id="blue_score">0</td>
-            <td colspan=2>
-                <h1><img id="logo" class="logo_img" src="Logo.png" />
-                    <font color="#FFC300">&nbsp;Scorer</font>
+            <td colspan="4">
+                <table width="100%">
+                    <tr valign="top">
+                            <td id="blue_score" style="width: 20vw;">0</td>
+                            <td align="left">
+                                <button id="buttonPP" onclick="onPlayPause()">
+                                    <img id="iconPP" class="circleIcon" src="play_circle_outline.svg"></img>
+                                </button>
+                            </td>
+                            <td colspan=2 align="center" style="position: relative">
+                                <button id="auto" onclick="onAuto()">Auto</button>
+                                <button id="teleop" onclick="onTeleOp()">TeleOp</button>
+                                <span id="countdown"></span><span id="linebreaker"></span><span id="countdown_label">&nbsp;</span>
+                            </td>
+                            <td align="right">
+                                <button id="buttonRefresh" onclick="location.reload()">
+                                    <img id="iconRefresh" class="circleIcon" src="refresh.svg"></img>
+                                </button>
+                            </td>
+                        </td>
+                        <td id="red_score" align="right" style="width: 20vw;">0</td>
+                    </tr>
+                </table>
             </td>
-            <td id="red_score" align="right">0</td>
         </tr>
 
         <tr style="vertical-align:top">
@@ -1261,10 +1355,14 @@
         <tr>
             <td colspan="2" id="blue_skybridge" style="position: relative">
                 <span class="skybridge blue_glow" style="left:1vw"></span>
+                <div id="blue_parking_auto_1" class="parking"/>
+                <div id="blue_parking_auto_2" class="parking"/>
             </td>
 
             <td colspan="2" id="red_skybridge" style="position: relative">
                 <span class="skybridge red_glow" style="right:1vw"></span>
+                <div id="red_parking_auto_1" class="parking" />
+                <div id="red_parking_auto_2" class="parking" />
             </td>
             </td>
         </tr>
@@ -1283,13 +1381,6 @@
             <td colspan="2">
                 <table width="100%">
                     <tr>
-                        <td align="right" width="1%">
-                            <div id="blue_parking_auto_1" class="parking"/>
-                        </td>
-                        <td width="1%">
-                            <div id="blue_parking_auto_2" class="parking"/>
-                        </td>
-
                         <td align="right">
                             <div class="cap_holder">
                                 <div id="blue_cap_1" class="cap blue"/>
@@ -1302,7 +1393,7 @@
                         </td>
 
                         <td width="10%" align="center">
-                            <img id="remove_btn" src="RemoveStone.png" style="width:5vmax;"/>
+                            <img id="remove_btn" src="RemoveStone.png"/>
                         </td>
 
                         <td width="1%" align="right">
@@ -1314,13 +1405,6 @@
                             <div class="cap_holder">
                                 <div id="red_cap_2" class="cap red" />
                             </div>
-                        </td>
-
-                        <td width="1%">
-                            <div id="red_parking_auto_1" class="parking" />
-                        </td>
-                        <td width="1%">
-                            <div id="red_parking_auto_2" class="parking" />
                         </td>
                     </tr>
                 </table>
@@ -1340,23 +1424,6 @@
         </tr>
 
         <tr>
-            <td>
-                <button id="buttonPP" onclick="onPlayPause()">
-                    <img id="iconPP" class="circleIcon" src="play_circle_outline.svg"></img>
-                </button>
-            </td>
-            <td colspan=2 align="center" width="60vw" style="position: relative">
-                <button id="auto" onclick="onAuto()">Auto</button>
-                <button id="teleop" onclick="onTeleOp()">TeleOp</button>
-                <span id="countdown">&nbsp;</span>
-            </td>
-            <td align="right">
-                <button id="buttonRefresh" onclick="location.reload()">
-                    <img id="iconRefresh" class="circleIcon" src="refresh.svg"></img>
-                </button>
-            </td>
-        </tr>
-        <tr>
             <td colspan=4>
                 <div id="credits" class="skystone_color_shadowed">brought to you by #3409 - the Astromechs and #5227 -
                     Galactech. Report bugs, suggestions and submit PRs on <a
@@ -1364,5 +1431,7 @@
             <td>
         </tr>
     </table>
+
+    <img id="logo" class="logo_img" src="Logo.png" />
 </body>
 </html>
