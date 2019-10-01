@@ -1091,7 +1091,7 @@
 
     var timer = null;
     var phase = 0; // 0 = not started, 5 = finished
-    // 1 = auto (0:30), 2 = between (0:05), 3 = teleop (1:30), 4 = endgame (0:30)
+    // 1 = prematch, 2 = auto (0:30), 3 = between (0:05), 4 = teleop (1:30), 5 = endgame (0:30)
     // negative when paused
     var timeStart = 0;
 
@@ -1111,6 +1111,7 @@
 
                 editing = false;
 
+                PlaySound("StartMatch");
                 // Very first time, hide elements that you can't use in Auto
                 elByID("blue_platform_out").style.visibility = "hidden";
                 elByID("blue_parking_end_1").style.visibility = "hidden";
@@ -1149,7 +1150,7 @@
         var lbl = elByID("countdown_label");
         var elapsed;
 
-        if (phase < 0 || phase == 5) {
+        if (phase < 0 || phase == 6) {
             // Paused
             elapsed = timeStart;
             if (clock.style.color == "black")
@@ -1163,27 +1164,32 @@
         var bonus = 0;
         var label = "";
         if (Math.abs(phase) == 1) {
+            // Prematch countdown
+            dur = 4;
+            clock.style.color = "blue";
+            label = "ready...";
+        } else if (Math.abs(phase) == 2) {
             // Autonomous
             dur = 30;
             clock.style.color = "blue";
             label = "autonomous";
-        } else if (Math.abs(phase) == 2) {
+        } else if (Math.abs(phase) == 3) {
             // Transition
             dur = 8;
             clock.style.color = "red";
             label = "ready..."
-        } else if (Math.abs(phase) == 3) {
+        } else if (Math.abs(phase) == 4) {
             // Teleop period
             dur = 90;
             bonus = 30; // Show the 30 seconds for Endgame as part of teleop  count
             clock.style.color = "blue";
             label = "teleop"
-        } else if (Math.abs(phase) == 4) {
+        } else if (Math.abs(phase) == 5) {
             // EndGame period
             dur = 30;
             clock.style.color = "orange";
             label = "endgame"
-        } else if (Math.abs(phase) == 5) {
+        } else if (Math.abs(phase) == 6) {
             // Game over!
             clock.style.display = "none";
             lbl.innerHTML = "&nbsp;";
@@ -1205,15 +1211,37 @@
             phase += 1;
             timeStart = new Date().getTime();
 
-            if (phase == 2)
+            if (phase == 3)
+            {
+                PlaySound("StartTeleop");
                 elByID("auto").style.backgroundColor = INACTIVE_COLOR;
-            else if (phase == 3)
-                onTeleOp();
+            }
             else if (phase == 4)
+                onTeleOp();
+            else if (phase == 5)
+            {
+                PlaySound("StartEndgame");
                 onEndGame();
-            else if (phase > 4)
+            }
+            else if (phase > 5)
+            {
+                PlaySound("EndOfMatch");
                 editing = true;
+            }
         }
+    }
+
+    // HTML5 <audio> support
+    // Example:  PlaySound("working");
+    //      for  <audio id="working" src="snd/working.mp3"></audio>
+    function PlaySound(audioID) {
+        var sound = document.getElementById(audioID);
+        sound.loop = false;
+        sound.play();
+    }
+    function StopSound(audioID) {
+    	var sound = document.getElementById(audioID);
+	    sound.pause();
     }
 </script>
 
@@ -1433,5 +1461,10 @@
     </table>
 
     <img id="logo" class="logo_img" src="Logo.png" />
+
+    <audio id="StartMatch" src="Autonomous.mp3"></audio>
+    <audio id="StartTeleop" src="PickUpControllers.mp3"></audio>
+    <audio id="StartEndgame" src="EndgameStart.mp3"></audio>
+    <audio id="EndOfMatch" src="EndOfMatch.mp3"></audio>
 </body>
 </html>
