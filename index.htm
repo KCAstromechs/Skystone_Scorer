@@ -1252,7 +1252,7 @@
         // the iOS requirement that all sounds be initiated by a user action.
     	var sound = document.getElementById(audioID);
         sound.loop = false;
-        sound.play().then(() => sound.pause())
+        sound.play().then(function(x) { sound.pause(); });
     }
 
 </script>
