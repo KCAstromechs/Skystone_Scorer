@@ -1241,6 +1241,7 @@
     function PlaySound(audioID) {
         var sound = document.getElementById(audioID);
         sound.loop = false;
+        sound.currentTime = 0;
         sound.play();
     }
     function StopSound(audioID) {
@@ -1252,7 +1253,7 @@
         // the iOS requirement that all sounds be initiated by a user action.
     	var sound = document.getElementById(audioID);
         sound.loop = false;
-        sound.play().then(function(x) { sound.pause(); });
+        sound.play().then(function(x) { console.log("Pausing: " + audioID); document.getElementById(audioID).pause(); console.log("Paused: "+audioID)});
     }
 
 </script>
