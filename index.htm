@@ -1111,7 +1111,11 @@
 
                 editing = false;
 
+                PrepSound("StartTeleop");
+                PrepSound("StartEndgame");
+                PrepSound("EndOfMatch");
                 PlaySound("StartMatch");
+
                 // Very first time, hide elements that you can't use in Auto
                 elByID("blue_platform_out").style.visibility = "hidden";
                 elByID("blue_parking_end_1").style.visibility = "hidden";
@@ -1243,6 +1247,14 @@
     	var sound = document.getElementById(audioID);
 	    sound.pause();
     }
+    function PrepSound(audioID) {
+        // This allows us to later trigger playing a sound without violating
+        // the iOS requirement that all sounds be initiated by a user action.
+    	var sound = document.getElementById(audioID);
+        sound.loop = false;
+        sound.play().then(() => sound.pause())
+    }
+
 </script>
 
 <body onpageshow="init()">
@@ -1462,9 +1474,9 @@
 
     <img id="logo" class="logo_img" src="Logo.png" />
 
-    <audio id="StartMatch" src="Autonomous.mp3"></audio>
-    <audio id="StartTeleop" src="PickUpControllers.mp3"></audio>
-    <audio id="StartEndgame" src="EndgameStart.mp3"></audio>
-    <audio id="EndOfMatch" src="EndOfMatch.mp3"></audio>
+    <audio id="StartMatch" src="Autonomous.mp3" preload="auto"></audio>
+    <audio id="StartTeleop" src="PickUpControllers.mp3" preload="auto"></audio>
+    <audio id="StartEndgame" src="EndgameStart.mp3" preload="auto"></audio>
+    <audio id="EndOfMatch" src="EndOfMatch.mp3" preload="auto"></audio>
 </body>
 </html>
