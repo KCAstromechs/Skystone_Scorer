@@ -1111,9 +1111,6 @@
 
                 editing = false;
 
-                PrepSound("StartTeleop");
-                PrepSound("StartEndgame");
-                PrepSound("EndOfMatch");
                 PlaySound("StartMatch");
 
                 // Very first time, hide elements that you can't use in Auto
@@ -1240,20 +1237,21 @@
     //      for  <audio id="working" src="snd/working.mp3"></audio>
     function PlaySound(audioID) {
         var sound = document.getElementById(audioID);
-        sound.loop = false;
-        sound.currentTime = 0;
-        sound.play();
+        var player = document.getElementById("AudioPlayer");
+
+        // Using a single player allows us to later trigger a sound without
+        // violating the iOS requirement that all sounds be initiated by a user
+        // action. The first sound has to be triggered by a user action which
+        // grants the player user-permission.  Subsequent (e.g. a timer
+        // triggered) sounds inherit the permission granted the player element.
+        player.loop = false;
+        player.currentTime = 0;
+        player.src = sound.src;
+        player.play();
     }
     function StopSound(audioID) {
-    	var sound = document.getElementById(audioID);
-	    sound.pause();
-    }
-    function PrepSound(audioID) {
-        // This allows us to later trigger playing a sound without violating
-        // the iOS requirement that all sounds be initiated by a user action.
-    	var sound = document.getElementById(audioID);
-        sound.loop = false;
-        sound.play().then(function(x) { console.log("Pausing: " + audioID); document.getElementById(audioID).pause(); console.log("Paused: "+audioID)});
+        var player = document.getElementById("AudioPlayer");
+	    player.pause();
     }
 
 </script>
@@ -1475,6 +1473,7 @@
 
     <img id="logo" class="logo_img" src="Logo.png" />
 
+    <audio id="AudioPlayer" src=""></audio>
     <audio id="StartMatch" src="Autonomous.mp3" preload="auto"></audio>
     <audio id="StartTeleop" src="PickUpControllers.mp3" preload="auto"></audio>
     <audio id="StartEndgame" src="EndgameStart.mp3" preload="auto"></audio>
