@@ -1103,15 +1103,10 @@
             onAuto();
 
             btn.src = "pause_circle_outline.svg";
+            showMessage("");
 
             if (phase == 0) {
-                // Starting
-                phase += 1;
-                timeStart = new Date().getTime();
-
-                editing = false;
-
-                PlaySound("StartMatch");
+                PlaySound("StartMatch", startMatch);
 
                 // Very first time, hide elements that you can't use in Auto
                 elByID("blue_platform_out").style.visibility = "hidden";
@@ -1134,9 +1129,10 @@
                 // Unpausing
                 phase = -phase;
                 timeStart = new Date().getTime() - timeStart;
+                if (timer)
+                    clearInterval(timer);
+                timer = setInterval(onClockUpdate, 50);
             }
-            showMessage("");
-            timer = setInterval(onClockUpdate, 50);
         } else {
             // Pausing...
             btn.src = "play_circle_outline.svg";
@@ -1144,6 +1140,14 @@
             timeStart = new Date().getTime() - timeStart;
             showMessage("Paused");
         }
+    }
+
+    function startMatch() {
+        // Starting
+        phase = 1;
+        timeStart = new Date().getTime();
+        editing = false;
+        timer = setInterval(onClockUpdate, 50);
     }
 
     function onClockUpdate() {
@@ -1214,8 +1218,12 @@
 
             if (phase == 3)
             {
-                PlaySound("StartTeleop");
                 elByID("auto").style.backgroundColor = INACTIVE_COLOR;
+                PlaySound("StartTeleop", startTeleop);
+
+                // Stop timer, it will restart when the sound loads and begins
+                // to play.  This ensures things are synched.
+                clearInterval(timer);
             }
             else if (phase == 4)
                 onTeleOp();
@@ -1232,10 +1240,15 @@
         }
     }
 
+    function startTeleop() {
+        timeStart = new Date().getTime();
+        timer = setInterval(onClockUpdate, 50);
+    }
+
     // HTML5 <audio> support
     // Example:  PlaySound("working");
     //      for  <audio id="working" src="snd/working.mp3"></audio>
-    function PlaySound(audioID) {
+    function PlaySound(audioID, onstart) {
         var sound = document.getElementById(audioID);
         var player = document.getElementById("AudioPlayer");
 
@@ -1247,6 +1260,7 @@
         player.loop = false;
         player.currentTime = 0;
         player.src = sound.src;
+        player.onplay = onstart;
         player.play();
     }
     function StopSound(audioID) {
