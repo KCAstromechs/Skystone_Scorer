@@ -487,7 +487,6 @@
             display: inline-table;
         }
         .stone_counters td {
-            padding: 0.5vw;
             font-size: 4.5vh;
         }
 
@@ -1097,6 +1096,9 @@
 
             if (phase == 0) {
                 PlaySound("StartMatch", startMatch);
+                PreloadSound("StartTeleop");
+                PreloadSound("StartEndgame");
+                PreloadSound("EndOfMatch");
 
                 // Very first time, hide elements that you can't use in Auto
                 elByID("blue_platform_out").style.visibility = "hidden";
@@ -1250,12 +1252,21 @@
         player.loop = false;
         player.currentTime = 0;
         player.src = sound.src;
-        player.onplay = onstart;
+        if (onstart)
+            player.addEventListener("playing", function() { onstart(); }, {once: true});
         player.play();
     }
     function StopSound(audioID) {
         var player = document.getElementById("AudioPlayer");
 	    player.pause();
+    }
+    function PreloadSound(audioID) {
+        var sound = document.getElementById(audioID);
+        if (sound.readyState < 3)   // 3 = HAVE_FUTURE_DATA, 4 = ready to play
+        {
+            sound.loop = false;
+            sound.load();
+        }
     }
 
 </script>
