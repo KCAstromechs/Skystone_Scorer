@@ -99,7 +99,7 @@
     #red_parking_auto_1 {
         position: absolute;
         right: 15vmax;
-        top: -2vmax;
+        top: -1vmax;
     }
     #red_parking_auto_2 {
         position: absolute;
@@ -109,7 +109,7 @@
     #blue_parking_auto_1 {
         position: absolute;
         left: 15vmax;
-        top: -2vmax;
+        top: -1vmax;
     }
     #blue_parking_auto_2 {
         position: absolute;
@@ -119,13 +119,10 @@
 
     #message {
         position: relative;
-        top: -1vmin;
         font-size: 3vmax;
-        width: 50vw;
+        width: 100%;
         color: gray;
         text-shadow: 0.2vmin 0.2vmin 0.4vmin #A1C3D0;
-        word-wrap: unset;
-        white-space: nowrap;
         overflow: visible;
         text-align: center;
         display: inline-block;
@@ -494,15 +491,8 @@
             font-size: 4.5vh;
         }
 
-
-        #logo {
-            left: 15%;
-            top: 75vh;
-        }
-
         #message {
-            height: 7vh;
-            padding: 1vh;
+            height: 7vmax;
         }
 
         #linebreaker {
@@ -1300,7 +1290,7 @@
         </tr>
 
         <tr style="vertical-align:top">
-            <td width="15vw" style="background-color:fff" rowspan="2">
+            <td width="15vw" style="background-color:fff">
                 <table>
                     <tr>
                         <td><span style="position: relative;">
@@ -1361,7 +1351,7 @@
                     </table>
                 </div>
             </td>
-            <td width="15vw" style="background-color:fff" rowspan="2" align="right">
+            <td width="15vw" style="background-color:fff" align="right">
                 <table>
                     <tr>
                         <td>
@@ -1400,19 +1390,13 @@
         </tr>
 
         <tr>
-            <td colspan="2" valign="top" align="center" width="60vw">
-                <span id="message">&nbsp;</span>
-            </td>
-        </tr>
-
-        <tr>
-            <td colspan="2" id="blue_skybridge" style="position: relative">
-                <span class="skybridge blue_glow" style="left:1vw"></span>
+            <td colspan="2" id="blue_skybridge" style="position: relative; padding-top: 2vh;">
+                <span class="skybridge blue_glow" style="left:1vw;"></span>
                 <div id="blue_parking_auto_1" class="parking"/>
                 <div id="blue_parking_auto_2" class="parking"/>
             </td>
 
-            <td colspan="2" id="red_skybridge" style="position: relative">
+            <td colspan="2" id="red_skybridge" style="position: relative; padding-top: 2vh;">
                 <span class="skybridge red_glow" style="right:1vw"></span>
                 <div id="red_parking_auto_1" class="parking" />
                 <div id="red_parking_auto_2" class="parking" />
@@ -1460,6 +1444,9 @@
                             </div>
                         </td>
                     </tr>
+                    <tr><td colspan="5">
+                        <span id="message">&nbsp;</span>
+                    </td></tr>
                 </table>
             </td>
             <td align="right">
