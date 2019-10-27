@@ -1159,7 +1159,7 @@
 
         var dur = 0;
         var bonus = 0;
-        var label = "";
+        var label = null;
         if (Math.abs(phase) == 1) {
             // Prematch countdown
             dur = 4;
@@ -1171,10 +1171,8 @@
             clock.style.color = "blue";
             label = "autonomous";
         } else if (Math.abs(phase) == 3) {
-            // Transition
+            // Transition to teleop
             dur = 8;
-            clock.style.color = "red";
-            label = "ready..."
         } else if (Math.abs(phase) == 4) {
             // Teleop period
             dur = 90;
@@ -1201,7 +1199,8 @@
         if (secs < 10)
             secs = "0" + secs;
         clock.innerHTML = minutes + ":" + secs;
-        lbl.innerHTML = label;
+        if (label)
+            lbl.innerHTML = label;
 
         if (remaining - bonus <= 0) {
             // Automatically move on to the next phase
@@ -1211,9 +1210,11 @@
             if (phase == 3)
             {
                 elByID("auto").style.backgroundColor = INACTIVE_COLOR;
+                clock.style.color = "red";
+                lbl.innerHTML = "get ready...";
                 PlaySound("StartTeleop", startTeleop);
 
-                // Stop timer, it will restart when the sound loads and begins
+                // Stop clock, it will restart when the sound loads and begins
                 // to play.  This ensures things are synched.
                 clearInterval(timer);
             }
@@ -1233,6 +1234,7 @@
     }
 
     function startTeleop() {
+        // Restart the clock
         timeStart = new Date().getTime();
         timer = setInterval(onClockUpdate, 50);
     }
