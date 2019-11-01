@@ -233,17 +233,18 @@
     #match_report {
         display: none;
         position: absolute;
-        top: 9vh;
+        top: 8.5vh;
         left: 0.5vw;
         float: right;
         width: 95%;
-        height: 86vh;
+        height: 87vh;
         z-index: 200;
         padding: 2vh 2vw;
         overflow: auto;
 
         background-color:ghostwhite;
     }
+
     .title {
         color: darkgreen;
         font-size: 2em;
@@ -251,12 +252,14 @@
         width: 100%;
     }
 
+    .report {
+        width: 50em;
+    }
     .report .heading {
         font-weight: 800;
         font-style: italic;
         color:black;
     }
-
     .report th {
         font-size: 1.5em;
         font-weight: 500;
@@ -265,11 +268,18 @@
         background-color: white;
         color:darkslategray;
     }
-
     .report td:nth-child(2) {
         padding-right: 3em;
     }
-
+    .report th:nth-child(3) {
+        padding-left: 2em;
+    }
+    .report td:nth-child(2),
+    .report td:nth-child(4)
+    {
+        background-color: #ddd;
+        padding: 2px 10px 2px 5px;
+    }
     .report td {
         font-size: 1.5em;
         text-align: left;
@@ -279,14 +289,12 @@
         border-width: 2px;
         border-color: darkcyan;
     }
-
     .report .bluefill {
         padding: 2px 0.5em;
         color: white;
         border-color: blue;
         background-color: blue;
     }
-
     .report .redfill {
         padding: 2px 0.5em;
         color: white;
@@ -581,6 +589,21 @@
         #linebreaker {
             display: block;
         }
+    }
+
+    /****** Webkit (iOS/Safari) scrollbar styling ******/
+    ::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    ::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
     }
 </style>
 
@@ -1184,14 +1207,14 @@
         // Capstone 1 placed
         report.rows[12].cells[1].innerHTML  =  capped1_height == null ? "No" : "Yes";
         // Capstone 1 height
-        report.rows[12].cells[3].innerHTML  =  capped1_height == null ? "--" : capped1_height;
+        report.rows[12].cells[3].innerHTML  =  capped1_height == null ? "&mdash;" : capped1_height;
         if (capped1_height !== null)
             score += 5 + capped1_height;
 
         // Capstone 2 placed
         report.rows[13].cells[1].innerHTML  =  capped2_height == null ? "No" : "Yes";
         // Capstone 2 height
-        report.rows[13].cells[3].innerHTML  =  capped2_height == null ? "--" : capped2_height;
+        report.rows[13].cells[3].innerHTML  =  capped2_height == null ? "&mdash;" : capped2_height;
         if (capped2_height !== null)
             score += 5 + capped2_height;
 
@@ -1642,95 +1665,93 @@
     <audio id="StartEndgame" src="EndgameStart.mp3" preload="auto"></audio>
     <audio id="EndOfMatch" src="EndOfMatch.mp3" preload="auto"></audio>
     <div id="match_report">
+        <center>
         <table class="report" id="blue_report">
-                <tr><td colspan="4" class="bluefill">Blue</td></tr>
-                <tr> <th colspan="4" class="heading">Autonomous Scores</th></tr>
-                <tr> <th>1st Stone</td>                 <td>Skystonex</td>
-                     <th>2nd Stone</td>                 <td>Stone</td>
-                    </tr>
-                <tr> <th>3rd Stone</td>                 <td>None</td>
-                     <th>4th Stone</td>                 <td>None</td>
-                    </tr>
-                <tr> <th>5th Stone</td>                 <td>None</td>
-                     <th>6th Stone</td>                 <td>None</td>
-                    </tr>
-                <tr> <th>Stones Returned</td>           <td>0</td>
-                     <th>1st Stone Returned</td>        <td>None</td>
-                    </tr>
-                <tr> <th>Stones Placed</td>             <td>3</td>
-                     <th>Foundation Repositioned</td>   <td>Yes</td>
-                    </tr>
-                <tr> <th>Robot 1 Navigated</td>         <td>Yes</td>
-                     <th>Robot 2 Navigated</td>         <td>No</td>
-                    </tr>
-
-                <tr><td>&nbsp;</td></tr>
-
-                <tr> <th colspan="4" class="heading">Driver Controlled Scores</th></tr>
-                <tr> <th>Stones Delivered</td>          <td>4</td>
-                     <th>Stones Returned</td>           <td>0</td>
-                    </tr>
-                <tr> <th>Stones Placed</td>             <td>2</td>
-                     <th>Tallest Skyscraper</td>        <td>2</td>
-                    </tr>
-                <tr> <th>Capstone 1 Placed</td>         <td>Yes</td>
-                     <th>Capstone Height</td>           <td>0</td>
-                    </tr>
-                <tr> <th>Capstone 2 Placed</td>         <td>No</td>
-                     <th>Capstone Height</td>           <td>&mdash;</td>
-                    </tr>
-                <tr> <th>Foundation moved</td>          <td>Yes</td>
-                     <th></td>                          <td></td>
-                    </tr>
-                <tr> <th>Robot 1 Parked</td>            <td>Yes</td>
-                     <th>Robot 2 Parked</td>            <td>Yes</td>
-                    </tr>
-            </table>
-
-        <table class="report" id="red_report">
-            <tr><td colspan="4" class="redfill">Red</td></tr>
-            <tr> <th colspan="4" class="heading">Autonomous Scores</th></tr>
-            <tr> <th>1st Stone</td>                 <td>Skystonexxx</td>
-                 <th>2nd Stone</td>                 <td>Stone</td>
-               </tr>
-            <tr> <th>3rd Stone</td>                 <td>None</td>
-                 <th>4th Stone</td>                 <td>None</td>
-               </tr>
-            <tr> <th>5th Stone</td>                 <td>None</td>
-                 <th>6th Stone</td>                 <td>None</td>
-               </tr>
-            <tr> <th>Stones Returned</td>           <td>0</td>
-                 <th>1st Stone Returned</td>        <td>None</td>
-               </tr>
-            <tr> <th>Stones Placed</td>             <td>3</td>
-                 <th>Foundation Repositioned</td>   <td>Yes</td>
-               </tr>
-            <tr> <th>Robot 1 Navigated</td>         <td>Yes</td>
-                 <th>Robot 2 Navigated</td>         <td>No</td>
-               </tr>
-
-            <tr><td>&nbsp;</td></tr>
-
-            <tr> <th colspan="4" class="heading">Driver Controlled Scores</th></tr>
-            <tr> <th>Stones Delivered</td>          <td>4</td>
-                 <th>Stones Returned</td>           <td>0</td>
+            <tr><td colspan="4" class="bluefill">Blue</td></tr>
+            <tr><th colspan="4" class="heading">Autonomous Scores</th></tr>
+            <tr><th>1st Stone</th>                 <td>Skystone</td>
+                <th>2nd Stone</th>                 <td>Stone</td>
                 </tr>
-            <tr> <th>Stones Placed</td>             <td>2</td>
-                 <th>Tallest Skyscraper</td>        <td>2</td>
+            <tr><th>3rd Stone</th>                 <td>None</td>
+                <th>4th Stone</th>                 <td>None</td>
                 </tr>
-            <tr> <th>Capstone 1 Placed</td>         <td>Yes</td>
-                 <th>Capstone Height</td>           <td>0</td>
+            <tr><th>5th Stone</th>                 <td>None</td>
+                <th>6th Stone</th>                 <td>None</td>
                 </tr>
-            <tr> <th>Capstone 2 Placed</td>         <td>No</td>
-                 <th>Capstone Height</td>           <td>&mdash;</td>
+            <tr><th>Stones Returned</th>           <td>0</td>
+                <th>1st Stone Returned</th>        <td>None</td>
                 </tr>
-            <tr> <th>Foundation moved</td>          <td>Yes</td>
-                 <th></td>                          <td></td>
+            <tr><th>Stones Placed</th>             <td>3</td>
+                <th>Foundation Repositioned</th>   <td>Yes</td>
                 </tr>
-            <tr> <th>Robot 1 Parked</td>            <td>Yes</td>
-                 <th>Robot 2 Parked</td>            <td>Yes</td>
+            <tr><th>Robot 1 Navigated</th>         <td>Yes</td>
+                <th>Robot 2 Navigated</th>         <td>No</td>
+                </tr>
+
+            <tr><th colspan="4" class="heading">&nbsp;<br/>Driver Controlled Scores</th></tr>
+            <tr><th>Stones Delivered</th>          <td>4</td>
+                <th>Stones Returned</th>           <td>0</td>
+                </tr>
+            <tr><th>Stones Placed</th>             <td>2</td>
+                <th>Tallest Skyscraper</th>        <td>2</td>
+                </tr>
+            <tr><th>Capstone 1 Placed</th>         <td>Yes</td>
+                <th>Capstone Height</th>           <td>0</td>
+                </tr>
+            <tr><th>Capstone 2 Placed</th>         <td>No</td>
+                <th>Capstone Height</th>           <td>&mdash;</td>
+                </tr>
+            <tr><th>Foundation moved</th>          <td>Yes</td>
+                <th colspan="2"></th>
+                </tr>
+            <tr><th>Robot 1 Parked</th>            <td>Yes</td>
+                <th>Robot 2 Parked</th>            <td>Yes</td>
                 </tr>
         </table>
+        <p>&nbsp;</p>
+        <table class="report" id="red_report">
+            <tr><td colspan="4" class="redfill">Red</td></tr>
+            <tr><th colspan="4" class="heading">Autonomous Scores</th></tr>
+            <tr><th>1st Stone</th>                 <td>Skystone</td>
+                <th>2nd Stone</th>                 <td>Stone</td>
+                </tr>
+            <tr><th>3rd Stone</th>                 <td>None</td>
+                <th>4th Stone</th>                 <td>None</td>
+                </tr>
+            <tr><th>5th Stone</th>                 <td>None</td>
+                <th>6th Stone</th>                 <td>None</td>
+                </tr>
+            <tr><th>Stones Returned</th>           <td>0</td>
+                <th>1st Stone Returned</th>        <td>None</td>
+                </tr>
+            <tr><th>Stones Placed</th>             <td>3</td>
+                <th>Foundation Repositioned</th>   <td>Yes</td>
+                </tr>
+            <tr><th>Robot 1 Navigated</th>         <td>Yes</td>
+                <th>Robot 2 Navigated</th>         <td>No</td>
+                </tr>
+
+            <tr><th colspan="4" class="heading">&nbsp;<br/>Driver Controlled Scores</th></tr>
+            <tr><th>Stones Delivered</th>          <td>4</td>
+                <th>Stones Returned</th>           <td>0</td>
+                </tr>
+            <tr><th>Stones Placed</th>             <td>2</td>
+                <th>Tallest Skyscraper</th>        <td>2</td>
+                </tr>
+            <tr><th>Capstone 1 Placed</th>         <td>Yes</td>
+                <th>Capstone Height</th>           <td>0</td>
+                </tr>
+            <tr><th>Capstone 2 Placed</th>         <td>No</td>
+                <th>Capstone Height</th>           <td>&mdash;</td>
+                </tr>
+            <tr><th>Foundation moved</th>          <td>Yes</td>
+                <th colspan="2"></th>
+                </tr>
+            <tr><th>Robot 1 Parked</th>            <td>Yes</td>
+                <th>Robot 2 Parked</th>            <td>Yes</td>
+                </tr>
+        </table>
+        </center>
     </div>
 </body>
 </html>

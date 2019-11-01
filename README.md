@@ -18,11 +18,10 @@ You can use this scorer in two ways:
    * Scoring elements are only available to click at the appropriate times.  (E.g. you can't score endgame parking until the last 30 seconds).  Projected final score is displayed at all times.
    * After the match completes all scoring elements can be adjusted to obtain final score.
 
-# TODO:
-* Ability to signify "robot touching" or "not locked" to invalidate skyscraper
+There is also a **Report** view which shows the scoring in ways that match the official
+FTC scoring system.
 
 ## Potential ideas
 * Possibly a single-side mode
 * Possibility of recording stone orientation when stacking
-* A standard match report
 * Help button, leads to popup explaining usage.
