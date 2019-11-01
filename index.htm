@@ -169,14 +169,26 @@
     }
 
     #auto,
-    #teleop {
-        font-size: 3vh;
+    #teleop,
+    #report {
+        font-size: 4vmin;
         background-color: #4CAF50;
         border: none;
         color: white;
-        padding: 1vh 2vw;
+        padding: 1vh 1.5vw;
         text-decoration: none;
         display: inline-block;
+        margin: 0;
+    }
+
+    #auto {
+        border-top-left-radius: 3vmax;
+        border-bottom-left-radius: 3vmax;
+    }
+    #report {
+        border-top-right-radius: 3vmax;
+        border-bottom-right-radius: 3vmax;
+        background-color: orange;
     }
 
     #buttonRefresh,
@@ -214,6 +226,72 @@
         position: absolute;
         border-top: 0vh solid;
         border-bottom: 0vh solid;
+    }
+
+    /*** Report section ***/
+
+    #match_report {
+        display: none;
+        position: absolute;
+        top: 9vh;
+        left: 0.5vw;
+        float: right;
+        width: 95%;
+        height: 86vh;
+        z-index: 200;
+        padding: 2vh 2vw;
+        overflow: auto;
+
+        background-color:ghostwhite;
+    }
+    .title {
+        color: darkgreen;
+        font-size: 2em;
+        text-align: center;
+        width: 100%;
+    }
+
+    .report .heading {
+        font-weight: 800;
+        font-style: italic;
+        color:black;
+    }
+
+    .report th {
+        font-size: 1.5em;
+        font-weight: 500;
+        text-align: left;
+        font-variant: small-caps;
+        background-color: white;
+        color:darkslategray;
+    }
+
+    .report td:nth-child(2) {
+        padding-right: 3em;
+    }
+
+    .report td {
+        font-size: 1.5em;
+        text-align: left;
+        font-variant: small-caps;
+        color: darkcyan;
+        background-color: white;
+        border-width: 2px;
+        border-color: darkcyan;
+    }
+
+    .report .bluefill {
+        padding: 2px 0.5em;
+        color: white;
+        border-color: blue;
+        background-color: blue;
+    }
+
+    .report .redfill {
+        padding: 2px 0.5em;
+        color: white;
+        border-color: red;
+        background-color: red;
     }
 
     /***************** Glow effect for Skybridges *****************/
@@ -357,6 +435,7 @@
         vertical-align: middle;
         margin: auto;
         margin-bottom: 20px;
+        color: lightgray;
     }
 
     .foundation td {
@@ -402,6 +481,11 @@
         border: 0;
         background-image: url(cap.png);
         background-size: 100% 100%;
+    }
+
+    .foundation td label {
+        color: gray;
+        text-shadow: none;
     }
 
     .cap_holder {
@@ -502,8 +586,9 @@
 
 <script>
     var ACTIVE_COLOR = "#4CAF50";
+    var ACTIVE_REPORT_COLOR = "orange";
     var INACTIVE_COLOR = "#aaa";
-    var isAuto = true;
+    var isAuto = false;
     var editing = true; // "Editing" is for when you aren't timing a match
     var removing = false; // for when picking up stones or caps
     var bouncer = null;
@@ -658,6 +743,7 @@
 
     function onSkyStoneClick(event) {
         var el = event.target;
+        var elTable = findAncestor(el, "table");
         event.preventDefault(); // prevents duplicate onclick if touchscreen
 
         if (prevent_bounce("skyStone"))
@@ -668,12 +754,18 @@
             return;
         }
 
-        var elTable = findAncestor(el, "table");
         if (removing) {
             elTable.rows[1].cells[0].innerHTML = Math.max(0, Number(elTable.rows[1].cells[0].innerHTML) - 1);
             endRemove();
         } else {
-            elTable.rows[1].cells[0].innerHTML = (Number(elTable.rows[1].cells[0].innerHTML) + 1) % 3;
+            var stone_table = elByID((elTable.id[0] == "r" ? "red" : "blue") + "_stone_count");
+            if (!editing && Number(stone_table.rows[1].cells[0].innerHTML) > 0) {
+                flashMessage("Skystones only count if placed before stones.");
+                stone_table.rows[1].cells[0].innerHTML = "+" + Math.max(0, Number(stone_table.rows[1].cells[0].innerHTML) + 1);
+                return;
+            }
+            else
+                elTable.rows[1].cells[0].innerHTML = Math.min(2, Number(elTable.rows[1].cells[0].innerHTML) + 1);
         }
         calcScore();
     }
@@ -912,11 +1004,20 @@
         hookup_Click(elByID("red_parking_end_1"), onEndParkClick);
         hookup_Click(elByID("red_parking_end_2"), onEndParkClick);
 
+        hookup_Click(elByID("red_none_docked"), calcScore);
+        hookup_Click(elByID("blue_none_docked"), calcScore);
+
         reset();
-        elByID("auto").style.backgroundColor = ACTIVE_COLOR;
-        elByID("teleop").style.backgroundColor = INACTIVE_COLOR
+        isAuto = false;
+        activateMode("teleop");
 
         calcScore();
+    }
+
+    function activateMode(active) {
+        elByID("auto").style.backgroundColor = (active == "auto" ? ACTIVE_COLOR : INACTIVE_COLOR);
+        elByID("teleop").style.backgroundColor = (active == "teleop" ? ACTIVE_COLOR : INACTIVE_COLOR);
+        elByID("report").style.backgroundColor = (active == "report" ? ACTIVE_REPORT_COLOR : INACTIVE_COLOR);
     }
 
     function preventZoom(e) {
@@ -934,9 +1035,8 @@
 
     function onTeleOp() {
         isAuto = false;
-
-        elByID("auto").style.backgroundColor = INACTIVE_COLOR;
-        elByID("teleop").style.backgroundColor = ACTIVE_COLOR;
+        activateMode("teleop");
+        displayReport(false);
     }
 
     function onEndGame() {
@@ -954,129 +1054,171 @@
 
     function onAuto() {
         isAuto = true;
-
-        elByID("auto").style.backgroundColor = ACTIVE_COLOR;
-        elByID("teleop").style.backgroundColor = INACTIVE_COLOR
+        activateMode("auto");
+        displayReport(false);
     }
 
-    function calcScore() {
-        var red = 0;
-        var blue = 0;
+    function onReport() {
+        activateMode("report");
+        displayReport(true);
+    }
+
+    function displayReport(show)
+    {
+        var score = 0;
+        var reports = elByID("match_report");
+        reports.style.display = show ? "inline-block" : "none";
+    }
+
+    function calcColorScore(color)
+    {
+        var score = 0;
+        var report = elByID(color+"_report");
+
+        // Examine foundation work
+        var foundation = elByID(color+"_foundation");
+        var cTallest = 0;
+        var cAutoPlaced = 0;
+        var cTeleopPlaced = 0;
+        var capped1_height = null;
+        var capped2_height = null;
+        var bNoSkyscrapers = elByID(color+"_none_docked").checked;
+        for (var c = 0; c < 2; c++)
+            for (var r = 0; r < 8; r++) {
+                var cell = foundation.rows[r].cells[c];
+                var cur = "" + cell.innerHTML;
+                var cAuto = 0;
+                var cTeleop = 0;
+
+                if (cur.includes('+')) {
+                    var asplit = cur.replace("+", "").split(auto_score_sep);
+                    cAuto = Number(asplit[0]);
+                    cTeleop = Number(asplit[1]);
+                } else
+                    cTeleop = Number(cur);
+                if (isNaN(cTeleop))
+                    cTeleop = 0;
+                if (isNaN(cAuto))
+                    cAuto = 0;
+
+                cAutoPlaced += cAuto;
+                cTeleopPlaced += cTeleop;
+
+                if (cAuto + cTeleop > cTallest && !bNoSkyscrapers)
+                    cTallest = cAuto + cTeleop;
+
+                if (cell.classList.contains("capped1"))
+                    capped1_height = cAuto + cTeleop;
+                if (cell.classList.contains("capped2"))
+                    capped2_height = cAuto + cTeleop;
+            }
 
         //////////////////////////////////////////////////////////////////////
         // Score Autonomous
-        blue += elByID("blue_platform_in").classList.contains("Moved") ? 10 : 0;
-        red += elByID("red_platform_in").classList.contains("Moved") ? 10 : 0;
 
-        red += 10 * Number(elByID("red_skystone_count").rows[1].cells[0].innerHTML);
-        red += 2 * Number(elByID("red_stone_count").rows[1].cells[0].innerHTML);
+        var skystones_auto = Number(elByID(color+"_skystone_count").rows[1].cells[0].innerHTML);
+        var stones_auto = Number(elByID(color+"_stone_count").rows[1].cells[0].innerHTML);
+        report.rows[2].cells[1].innerHTML  = skystones_auto > 0 ? "Skystone" :
+                                                stones_auto > 0 ? "Stone" : "None";         // 1st Stone
+        report.rows[2].cells[3].innerHTML  = skystones_auto > 1 ? "Skystone" :
+                                                stones_auto > 0 ? "Stone" : "None";         // 2nd Stone
+        report.rows[3].cells[1].innerHTML  = skystones_auto+stones_auto > 2 ? "Stone" : "None";  // 3rd Stone
+        report.rows[3].cells[3].innerHTML  = skystones_auto+stones_auto > 3 ? "Stone" : "None";  // 4th Stone
+        report.rows[4].cells[1].innerHTML  = skystones_auto+stones_auto > 4 ? "Stone" : "None";  // 5th Stone
+        report.rows[4].cells[3].innerHTML  = skystones_auto+stones_auto > 5 ? "Stone" : "None";  // 6th Stone
+        score += 10 * skystones_auto;   // Delivered skystones - assuming they were delivered first
+        score += 2 * stones_auto;
 
-        blue += 10 * Number(elByID("blue_skystone_count").rows[1].cells[0].innerHTML);
-        blue += 2 * Number(elByID("blue_stone_count").rows[1].cells[0].innerHTML);
+        // This ties the Skystone count to the first penalty for returning the Skystone.
+        // It is a special case that doesn't actually allow this app to score one case:
+        //   Skystone gets delivered under the middle, then returned under the bridge
+        // That case is so unlikely I'm not going to worry about it.
+        returned_auto = Number(elByID(color+"_return_count").rows[1].cells[0].innerHTML);
+        returned_teleop = Number(elByID(color+"_return_count").rows[1].cells[1].innerHTML);
+        report.rows[5].cells[1].innerHTML  = returned_auto;                            // Stones Returned
+        report.rows[5].cells[3].innerHTML  = returned_auto == 0 ? "None" :
+                                                skystones_auto > 0 ? "Skystone" : "Stone";  // 1st Stone Returned
+        score -= returned_auto == 0 ? 0 :
+                    skystones_auto > 0 ? 10+(returned_auto-1)*2 :
+                                         returned_auto*2;
+        // Stones placed
+        score += 4 * cAutoPlaced;
+        report.rows[6].cells[1].innerHTML  = cAutoPlaced;
 
-        blue += elByID("blue_parking_auto_1").classList.contains("Parked") ? 5 : 0;
-        blue += elByID("blue_parking_auto_2").classList.contains("Parked") ? 5 : 0;
-        red += elByID("red_parking_auto_1").classList.contains("Parked") ? 5 : 0;
-        red += elByID("red_parking_auto_2").classList.contains("Parked") ? 5 : 0;
+        // Foundation repositioned
+        var foundation_repositioned = elByID(color+"_platform_in").classList.contains("Moved");
+        score += foundation_repositioned ? 10 : 0;
+        report.rows[6].cells[3].innerHTML  = foundation_repositioned ? "Yes" : "No";
 
-        // Score teleop
-        red += 1 * Number(elByID("red_stone_count").rows[1].cells[1].innerHTML);
-        blue += 1 * Number(elByID("blue_stone_count").rows[1].cells[1].innerHTML);
+        // Robot 1 Navigated
+        var nav1 = elByID(color+"_parking_auto_1").classList.contains("Parked");
+        report.rows[7].cells[1].innerHTML  =  nav1 ? "Yes" : "No";
+        score += nav1 ? 5 : 0;
 
-        // Score Endgame
-        blue += elByID("blue_platform_out").classList.contains("Moved") ? 15 : 0;
-        red += elByID("red_platform_out").classList.contains("Moved") ? 15 : 0;
-
-        blue += elByID("blue_parking_end_1").classList.contains("Parked") ? 5 : 0;
-        blue += elByID("blue_parking_end_2").classList.contains("Parked") ? 5 : 0;
-        red += elByID("red_parking_end_1").classList.contains("Parked") ? 5 : 0;
-        red += elByID("red_parking_end_2").classList.contains("Parked") ? 5 : 0;
+        // Robot 2 Navigated
+        var nav2 = elByID(color+"_parking_auto_2").classList.contains("Parked");
+        report.rows[7].cells[3].innerHTML  =  nav2 ? "Yes" : "No";
+        score += nav2 ? 5 : 0;
 
 
-        var redFoundation = elByID("red_foundation");
-        var cTallest = 0;
-        for (var c = 0; c < 2; c++)
-            for (var r = 0; r < 8; r++) {
-                var cell = redFoundation.rows[r].cells[c];
-                var cur = "" + cell.innerHTML;
-                var cAuto = 0;
-                var cTeleop = 0;
+        //////////////////////////////////////////////////////////////////////
+        // Score Teleop
 
-                if (cur.includes('+')) {
-                    var asplit = cur.replace("+", "").split(auto_score_sep);
-                    cAuto = Number(asplit[0]);
-                    cTeleop = Number(asplit[1]);
-                } else
-                    cTeleop = Number(cur);
-                if (isNaN(cTeleop))
-                    cTeleop = 0;
-                if (isNaN(cAuto))
-                    cAuto = 0;
+        // Stones delivered
+        var delivered_telop = Number(elByID(color+"_stone_count").rows[1].cells[1].innerHTML);
+        report.rows[10].cells[1].innerHTML  =  delivered_telop;
+        score += delivered_telop;
 
-                red += 4 * cAuto;
-                red += 1 * cTeleop;
+        // Stones returned
+        report.rows[10].cells[3].innerHTML  =  returned_teleop;
+        score -= returned_teleop;
 
-                if (cAuto + cTeleop > cTallest)
-                    cTallest = cAuto + cTeleop;
+        // Stones placed
+        report.rows[11].cells[1].innerHTML  =  cTeleopPlaced;
+        score += 1 * cTeleopPlaced;
 
-                if (cell.classList.contains("capped1")) {
-                    // Calc the cap score
-                    red += 5 + cAuto + cTeleop;
-                }
-                if (cell.classList.contains("capped2")) {
-                    // Calc the cap score
-                    red += 5 + cAuto + cTeleop;
-                }
-            }
-        red += 2 * cTallest;
+        // Tallest skyscraper
+        report.rows[11].cells[3].innerHTML  =  cTallest;
+        score += 2 * cTallest;
 
-        var blueFoundation = elByID("blue_foundation");
-        cTallest = 0;
-        for (var c = 0; c < 2; c++)
-            for (var r = 0; r < 8; r++) {
-                var cell = blueFoundation.rows[r].cells[c];
-                var cur = "" + cell.innerHTML;
-                var cAuto = 0;
-                var cTeleop = 0;
+        // Capstone 1 placed
+        report.rows[12].cells[1].innerHTML  =  capped1_height == null ? "No" : "Yes";
+        // Capstone 1 height
+        report.rows[12].cells[3].innerHTML  =  capped1_height == null ? "--" : capped1_height;
+        if (capped1_height !== null)
+            score += 5 + capped1_height;
 
-                if (cur.includes('+')) {
-                    var asplit = cur.replace("+", "").split(auto_score_sep);
-                    cAuto = Number(asplit[0]);
-                    cTeleop = Number(asplit[1]);
-                } else
-                    cTeleop = Number(cur);
-                if (isNaN(cTeleop))
-                    cTeleop = 0;
-                if (isNaN(cAuto))
-                    cAuto = 0;
+        // Capstone 2 placed
+        report.rows[13].cells[1].innerHTML  =  capped2_height == null ? "No" : "Yes";
+        // Capstone 2 height
+        report.rows[13].cells[3].innerHTML  =  capped2_height == null ? "--" : capped2_height;
+        if (capped2_height !== null)
+            score += 5 + capped2_height;
 
-                blue += 4 * cAuto;
-                blue += 1 * cTeleop;
+        // Foundation moved out
+        var foundation_out = elByID("blue_platform_out").classList.contains("Moved");
+        report.rows[14].cells[1].innerHTML = foundation_out ? "Yes" : "No";
+        score += foundation_out ? 15 : 0;
 
-                if (cAuto + cTeleop > cTallest)
-                    cTallest = cAuto + cTeleop;
+        // Robot 1 parked
+        var parked1 = elByID(color+"_parking_end_1").classList.contains("Parked");
+        report.rows[15].cells[1].innerHTML = parked1 ? "Yes" : "No";
+        score += parked1 ? 5 : 0;
+        // Robot 2 parked
+        var parked2 = elByID(color+"_parking_end_2").classList.contains("Parked");
+        report.rows[15].cells[3].innerHTML = parked2 ? "Yes" : "No";
+        score += parked2 ? 5 : 0;
 
-                if (cell.classList.contains("capped1")) {
-                    // Calc the cap score
-                    blue += 5 + cAuto + cTeleop;
-                }
-                if (cell.classList.contains("capped2")) {
-                    // Calc the cap score
-                    blue += 5 + cAuto + cTeleop;
-                }
-            }
-        blue += 2 * cTallest;
+        return score;
+    }
 
-        // Deal with penalties
-        blue -= 10 * Number(elByID("blue_return_count").rows[1].cells[0].innerHTML);
-        blue -= 2 * Number(elByID("blue_return_count").rows[1].cells[1].innerHTML);
-        red -= 10 * Number(elByID("red_return_count").rows[1].cells[0].innerHTML);
-        red -= 2 * Number(elByID("red_return_count").rows[1].cells[1].innerHTML);
+    function calcScore() {
+        var red = calcColorScore("red");
+        var blue = calcColorScore("blue");
 
         elByID("blue_score").innerHTML = blue;
         elByID("red_score").innerHTML = red;
     }
-
 
     var timer = null;
     var phase = 0; // 0 = not started, 5 = finished
@@ -1115,6 +1257,7 @@
 
                 elByID("auto").style.display = "none";
                 elByID("teleop").style.display = "none";
+                elByID("report").style.display = "none";
                 elByID("countdown").style.display = "inline-block";
                 elByID("countdown").innerHTML = "0:30";
             } else {
@@ -1191,6 +1334,7 @@
             elByID("buttonPP").style.visibility = "hidden";
             elByID("auto").style.display = null;
             elByID("teleop").style.display = null;
+            elByID("report").style.display = null;
             return;
         }
         var remaining = Math.round((dur + bonus) - elapsed / 1000);
@@ -1209,7 +1353,7 @@
 
             if (phase == 3)
             {
-                elByID("auto").style.backgroundColor = INACTIVE_COLOR;
+                activateMode("none");
                 clock.style.color = "red";
                 lbl.innerHTML = "get ready...";
                 PlaySound("StartTeleop", startTeleop);
@@ -1286,8 +1430,11 @@
                                 </button>
                             </td>
                             <td colspan=2 align="center" style="position: relative">
-                                <button id="auto" onclick="onAuto()">Auto</button>
-                                <button id="teleop" onclick="onTeleOp()">TeleOp</button>
+                                <table border="0" cellspacing="0" cellpadding="0">
+                                    <tr><td><button id="auto" onclick="onAuto()">Auto</button></td>
+                                        <td><button id="teleop" onclick="onTeleOp()">TeleOp</button></td>
+                                        <td><button id="report" onclick="onReport()">Report</button></td></tr>
+                                </table>
                                 <span id="countdown"></span><span id="linebreaker"></span><span id="countdown_label">&nbsp;</span>
                             </td>
                             <td align="right">
@@ -1351,6 +1498,7 @@
                         <tr><td/><td/></tr>
                         <tr><td/><td/></tr>
                         <tr><td/><td/></tr>
+                        <tr><td colspan=2 style="border: 0;"><label><input id="blue_none_docked" type="checkbox"/>All fallen?</label></td></tr>
                     </table>
                     <table class="foundation red counter" id="red_foundation">
                         <tr><td/><td/></tr>
@@ -1361,6 +1509,7 @@
                         <tr><td/><td/></tr>
                         <tr><td/><td/></tr>
                         <tr><td/><td/></tr>
+                        <tr><td colspan=2 style="border: 0;"><label><input id="red_none_docked" type="checkbox"/>All fallen?</label></td></tr>
                     </table>
                 </div>
             </td>
@@ -1492,5 +1641,96 @@
     <audio id="StartTeleop" src="PickUpControllers.mp3" preload="auto"></audio>
     <audio id="StartEndgame" src="EndgameStart.mp3" preload="auto"></audio>
     <audio id="EndOfMatch" src="EndOfMatch.mp3" preload="auto"></audio>
+    <div id="match_report">
+        <table class="report" id="blue_report">
+                <tr><td colspan="4" class="bluefill">Blue</td></tr>
+                <tr> <th colspan="4" class="heading">Autonomous Scores</th></tr>
+                <tr> <th>1st Stone</td>                 <td>Skystonex</td>
+                     <th>2nd Stone</td>                 <td>Stone</td>
+                    </tr>
+                <tr> <th>3rd Stone</td>                 <td>None</td>
+                     <th>4th Stone</td>                 <td>None</td>
+                    </tr>
+                <tr> <th>5th Stone</td>                 <td>None</td>
+                     <th>6th Stone</td>                 <td>None</td>
+                    </tr>
+                <tr> <th>Stones Returned</td>           <td>0</td>
+                     <th>1st Stone Returned</td>        <td>None</td>
+                    </tr>
+                <tr> <th>Stones Placed</td>             <td>3</td>
+                     <th>Foundation Repositioned</td>   <td>Yes</td>
+                    </tr>
+                <tr> <th>Robot 1 Navigated</td>         <td>Yes</td>
+                     <th>Robot 2 Navigated</td>         <td>No</td>
+                    </tr>
+
+                <tr><td>&nbsp;</td></tr>
+
+                <tr> <th colspan="4" class="heading">Driver Controlled Scores</th></tr>
+                <tr> <th>Stones Delivered</td>          <td>4</td>
+                     <th>Stones Returned</td>           <td>0</td>
+                    </tr>
+                <tr> <th>Stones Placed</td>             <td>2</td>
+                     <th>Tallest Skyscraper</td>        <td>2</td>
+                    </tr>
+                <tr> <th>Capstone 1 Placed</td>         <td>Yes</td>
+                     <th>Capstone Height</td>           <td>0</td>
+                    </tr>
+                <tr> <th>Capstone 2 Placed</td>         <td>No</td>
+                     <th>Capstone Height</td>           <td>&mdash;</td>
+                    </tr>
+                <tr> <th>Foundation moved</td>          <td>Yes</td>
+                     <th></td>                          <td></td>
+                    </tr>
+                <tr> <th>Robot 1 Parked</td>            <td>Yes</td>
+                     <th>Robot 2 Parked</td>            <td>Yes</td>
+                    </tr>
+            </table>
+
+        <table class="report" id="red_report">
+            <tr><td colspan="4" class="redfill">Red</td></tr>
+            <tr> <th colspan="4" class="heading">Autonomous Scores</th></tr>
+            <tr> <th>1st Stone</td>                 <td>Skystonexxx</td>
+                 <th>2nd Stone</td>                 <td>Stone</td>
+               </tr>
+            <tr> <th>3rd Stone</td>                 <td>None</td>
+                 <th>4th Stone</td>                 <td>None</td>
+               </tr>
+            <tr> <th>5th Stone</td>                 <td>None</td>
+                 <th>6th Stone</td>                 <td>None</td>
+               </tr>
+            <tr> <th>Stones Returned</td>           <td>0</td>
+                 <th>1st Stone Returned</td>        <td>None</td>
+               </tr>
+            <tr> <th>Stones Placed</td>             <td>3</td>
+                 <th>Foundation Repositioned</td>   <td>Yes</td>
+               </tr>
+            <tr> <th>Robot 1 Navigated</td>         <td>Yes</td>
+                 <th>Robot 2 Navigated</td>         <td>No</td>
+               </tr>
+
+            <tr><td>&nbsp;</td></tr>
+
+            <tr> <th colspan="4" class="heading">Driver Controlled Scores</th></tr>
+            <tr> <th>Stones Delivered</td>          <td>4</td>
+                 <th>Stones Returned</td>           <td>0</td>
+                </tr>
+            <tr> <th>Stones Placed</td>             <td>2</td>
+                 <th>Tallest Skyscraper</td>        <td>2</td>
+                </tr>
+            <tr> <th>Capstone 1 Placed</td>         <td>Yes</td>
+                 <th>Capstone Height</td>           <td>0</td>
+                </tr>
+            <tr> <th>Capstone 2 Placed</td>         <td>No</td>
+                 <th>Capstone Height</td>           <td>&mdash;</td>
+                </tr>
+            <tr> <th>Foundation moved</td>          <td>Yes</td>
+                 <th></td>                          <td></td>
+                </tr>
+            <tr> <th>Robot 1 Parked</td>            <td>Yes</td>
+                 <th>Robot 2 Parked</td>            <td>Yes</td>
+                </tr>
+        </table>
+    </div>
 </body>
 </html>
