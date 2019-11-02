@@ -21,6 +21,20 @@ You can use this scorer in two ways:
 There is also a **Report** view which shows the scoring in ways that match the official
 FTC scoring system.
 
+## NOTE
+
+The scorer assumes the first returned autonomous stone is a Skystone if there
+are any Skystones delivered.  This causes two potential problems in autonomous:
+* If a Skystone is scored, then a regular stone is delivered and returned.
+  You can score this correctly by simply removing the stone using the trashcan,
+  although the Report will be inaccurate.
+* No Skystone/stone is scored, but one is returned without being delivered.
+  This is a very rare case that only happens if they are taken to the other
+  side via the neutral skybridge before being returned.  This would result in
+  a net of -10 (for skystone in auto) -2 (for stone in auto) or -1 (for stone in
+  teleop) and cannot be directly scored properly.
+
+
 ## Potential ideas
 * Possibly a single-side mode
 * Possibility of recording stone orientation when stacking
