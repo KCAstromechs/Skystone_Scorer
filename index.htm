@@ -35,8 +35,8 @@
         position: fixed;
         left: 50%;
         top: 50vh;
-        width: 25%;
-        margin-left: calc(25% / -2);
+        width: 15%;
+        margin-left: calc(15% / -2);
         opacity:0.05;
         z-index: 0;
     }
@@ -496,6 +496,14 @@
         text-shadow: none;
     }
 
+    .noskyscraper {
+        border: 0;
+        background-color: white;
+    }
+    .noskyscraper label {
+        font-size: 75%;
+    }
+
     .cap_holder {
         width: 5vmax;
         height: 5vmax;
@@ -718,14 +726,14 @@
             cap.style.top = null;
             cap.style.left = null;
 
-            // Uncapping a previously capped tower
-            if (cap.tower.classList.contains("capped2"))
-                cap.tower.classList.remove("capped2");
-            else if (cap.tower.classList.contains("capped1"))
-                cap.tower.classList.remove("capped1");
+            // Uncapping a previously capped skyscraper
+            if (cap.skyscraper.classList.contains("capped2"))
+                cap.skyscraper.classList.remove("capped2");
+            else if (cap.skyscraper.classList.contains("capped1"))
+                cap.skyscraper.classList.remove("capped1");
             cap.style.width = null;
             cap.style.height = null;
-            cap.tower = null;
+            cap.skyscraper = null;
             cap = null;
 
 
@@ -738,7 +746,7 @@
             flashMessage("Cap cancelled");
             cap = null;
         } else {
-            showMessage("Tap the tower to cap");
+            showMessage("Tap the skyscraper to cap");
             cap = ev.target;
         }
     }
@@ -838,19 +846,19 @@
             if ((elTable.classList.contains("red") && cap.classList.contains("blue")) ||
                 (elTable.classList.contains("blue") && cap.classList.contains("red")) )
             {
-                flashMessage("Cap is for other aliance.", "Tap the tower to cap");
+                flashMessage("Cap is for other aliance.", "Tap the skyscraper to cap");
                 return;
             }
 
 
             showMessage("");
 
-            if (cap.tower) {
-                // Uncapping a previously capped tower
-                cap.tower.classList.remove(cap.cellPos);
+            if (cap.skyscraper) {
+                // Uncapping a previously capped skyscraper
+                cap.skyscraper.classList.remove(cap.cellPos);
                 cap.cellPos = null;
             }
-            cap.tower = cell;
+            cap.skyscraper = cell;
 
 
             var xOfs = 0;
@@ -1189,47 +1197,47 @@
 
         // Stones delivered
         var delivered_telop = Number(elByID(color+"_stone_count").rows[1].cells[1].innerHTML);
-        report.rows[10].cells[1].innerHTML  =  delivered_telop;
+        report.rows[9].cells[1].innerHTML  =  delivered_telop;
         score += delivered_telop;
 
         // Stones returned
-        report.rows[10].cells[3].innerHTML  =  returned_teleop;
+        report.rows[9].cells[3].innerHTML  =  returned_teleop;
         score -= returned_teleop;
 
         // Stones placed
-        report.rows[11].cells[1].innerHTML  =  cTeleopPlaced;
+        report.rows[10].cells[1].innerHTML  =  cTeleopPlaced;
         score += 1 * cTeleopPlaced;
 
         // Tallest skyscraper
-        report.rows[11].cells[3].innerHTML  =  cTallest;
+        report.rows[10].cells[3].innerHTML  =  cTallest;
         score += 2 * cTallest;
 
         // Capstone 1 placed
-        report.rows[12].cells[1].innerHTML  =  capped1_height == null ? "No" : "Yes";
+        report.rows[11].cells[1].innerHTML  =  capped1_height == null ? "No" : "Yes";
         // Capstone 1 height
-        report.rows[12].cells[3].innerHTML  =  capped1_height == null ? "&mdash;" : capped1_height;
+        report.rows[11].cells[3].innerHTML  =  capped1_height == null ? "&mdash;" : capped1_height;
         if (capped1_height !== null)
             score += 5 + capped1_height;
 
         // Capstone 2 placed
-        report.rows[13].cells[1].innerHTML  =  capped2_height == null ? "No" : "Yes";
+        report.rows[12].cells[1].innerHTML  =  capped2_height == null ? "No" : "Yes";
         // Capstone 2 height
-        report.rows[13].cells[3].innerHTML  =  capped2_height == null ? "&mdash;" : capped2_height;
+        report.rows[12].cells[3].innerHTML  =  capped2_height == null ? "&mdash;" : capped2_height;
         if (capped2_height !== null)
             score += 5 + capped2_height;
 
         // Foundation moved out
-        var foundation_out = elByID("blue_platform_out").classList.contains("Moved");
-        report.rows[14].cells[1].innerHTML = foundation_out ? "Yes" : "No";
+        var foundation_out = elByID(color+"_platform_out").classList.contains("Moved");
+        report.rows[13].cells[1].innerHTML = foundation_out ? "Yes" : "No";
         score += foundation_out ? 15 : 0;
 
         // Robot 1 parked
         var parked1 = elByID(color+"_parking_end_1").classList.contains("Parked");
-        report.rows[15].cells[1].innerHTML = parked1 ? "Yes" : "No";
+        report.rows[14].cells[1].innerHTML = parked1 ? "Yes" : "No";
         score += parked1 ? 5 : 0;
         // Robot 2 parked
         var parked2 = elByID(color+"_parking_end_2").classList.contains("Parked");
-        report.rows[15].cells[3].innerHTML = parked2 ? "Yes" : "No";
+        report.rows[14].cells[3].innerHTML = parked2 ? "Yes" : "No";
         score += parked2 ? 5 : 0;
 
         return score;
@@ -1521,7 +1529,7 @@
                         <tr><td/><td/></tr>
                         <tr><td/><td/></tr>
                         <tr><td/><td/></tr>
-                        <tr><td colspan=2 style="border: 0;"><label><input id="blue_none_docked" type="checkbox"/>All fallen?</label></td></tr>
+                        <tr><td colspan=2 class="noskyscraper"><label><input id="blue_none_docked" type="checkbox"/>No skyscraper?</label></td></tr>
                     </table>
                     <table class="foundation red counter" id="red_foundation">
                         <tr><td/><td/></tr>
@@ -1532,7 +1540,7 @@
                         <tr><td/><td/></tr>
                         <tr><td/><td/></tr>
                         <tr><td/><td/></tr>
-                        <tr><td colspan=2 style="border: 0;"><label><input id="red_none_docked" type="checkbox"/>All fallen?</label></td></tr>
+                        <tr><td colspan=2 class="noskyscraper"><label><input id="red_none_docked" type="checkbox"/>No skyscraper?</label></td></tr>
                     </table>
                 </div>
             </td>

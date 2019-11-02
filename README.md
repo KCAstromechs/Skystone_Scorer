@@ -3,6 +3,7 @@ Scorer / Timer webapp for the FTC Skystone game
 
 [<img src="preview_DesktopLayout.png" width="85%"/>](https://raw.githack.com/KCAstromechs/Skystone_Scorer/master/index.htm)
 
+[<img src="preview_DesktopReport.png" width="85%"/>](https://raw.githack.com/KCAstromechs/Skystone_Scorer/master/index.htm)
 
 [Run directly from this repo](https://raw.githack.com/KCAstromechs/Skystone_Scorer/master/index.htm)
 
